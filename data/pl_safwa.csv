@@ -1,0 +1,10 @@
+Transaction_Date,Account_Level_1,Account_Level_2,Account_Level_3,Cost_Center,net_amount
+2025-01-01,Revenue,Revenue,Product Sales,سلة,150000
+2025-01-01,Expenses,Marketing Expenses,Digital Marketing,سلة,-42000
+2025-01-01,Expenses,Operating Expenses,Salaries,سلة,-6000
+2025-01-15,Revenue,Revenue,Product Sales,سلة,180000
+2025-01-15,Expenses,Marketing Expenses,Social Media Ads,سلة,-50000
+2025-01-15,Expenses,Operating Expenses,Rent,سلة,-4500
+2025-02-01,Revenue,Revenue,Product Sales,سلة,200000
+2025-02-01,Expenses,Marketing Expenses,Influencer Marketing,سلة,-56000
+2025-02-01,Expenses,Operating Expenses,Utilities,سلة,-3500
