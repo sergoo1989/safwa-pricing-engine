@@ -1,0 +1,6 @@
+Package_SKU,Package_Name,Components
+PKG001,باقة الاحتفال الصغيرة,PROD001:2:product;PROD003:1:product;MAT012:1:material
+PKG002,باقة الشوكولاتة المميزة,PROD002:1:product;PROD004:2:product;MAT012:1:material
+PKG003,باقة التذوق المتنوعة,PROD001:1:product;PROD003:1:product;PROD005:2:product;MAT012:1:material
+PKG004,الباقة العائلية الكبيرة,PROD002:2:product;PROD004:2:product;PROD005:3:product;MAT012:1:material
+PKG005,باقة المناسبات الفاخرة,PKG001:1:package;PROD002:1:product;PROD004:1:product;MAT012:1:material
