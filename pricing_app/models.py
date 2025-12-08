@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Dict, List
 
 @dataclass
 class Material:
@@ -26,6 +26,15 @@ class Package:
     components: list  # List of (sku, quantity, type)
 
 @dataclass
+class CustomFee:
+    """Custom fee for a channel"""
+    name: str  # اسم الرسم
+    amount: float  # المبلغ أو النسبة
+    fee_type: str  # 'percentage' أو 'fixed' (نسبة من السعر أو مبلغ ثابت)
+    # percentage: من السعر بعد الخصم بدون ضريبة
+    # fixed: مبلغ ثابت بالريال
+
+@dataclass
 class ChannelFees:
     """Channel fees and parameters for pricing"""
     shipping_fixed: float = 20.0  # SAR
@@ -36,6 +45,12 @@ class ChannelFees:
     marketing_pct: float = 0.28   # 28% (from PL)
     opex_pct: float = 0.04        # 4% (from PL)
     preparation_fee: float = 6.0  # SAR
+    free_shipping_threshold: float = 0.0  # الحد الأدنى للشحن والتجهيز مجاني
+    custom_fees: Dict[str, CustomFee] = None  # رسوم إضافية مخصصة
+    
+    def __post_init__(self):
+        if self.custom_fees is None:
+            self.custom_fees = {}
 
 @dataclass
 class PriceBreakdown:

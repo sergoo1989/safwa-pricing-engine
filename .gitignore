@@ -8,4 +8,5 @@ venv/
 *.xls
 data/*.csv
 !data/*_template.csv
-output_*.csv
+output_*.csvbackups/
+*.tar.gz

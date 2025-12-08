@@ -1,6 +1,116 @@
-Product_SKU,Product_Name,BOM
-PROD001,كيكة الفانيليا الصغيرة,MAT001:0.5;MAT002:0.3;MAT003:0.2;MAT004:3;MAT005:0.2;MAT006:1;MAT007:1;MAT008:0.5;MAT010:1
-PROD002,كيكة الشوكولاتة المتوسطة,MAT001:0.8;MAT002:0.5;MAT003:0.3;MAT004:4;MAT005:0.3;MAT009:0.2;MAT007:1;MAT008:0.5;MAT011:1
-PROD003,تارت الفراولة,MAT001:0.4;MAT002:0.25;MAT003:0.15;MAT004:2;MAT014:0.2;MAT006:1;MAT010:1
-PROD004,براونيز بالشوكولاتة,MAT001:0.3;MAT002:0.4;MAT003:0.25;MAT004:3;MAT009:0.3;MAT013:0.1;MAT007:0.5;MAT011:1
-PROD005,كوكيز اللوز,MAT001:0.6;MAT002:0.35;MAT003:0.2;MAT004:2;MAT015:0.15;MAT006:1;MAT007:1;MAT010:1
+﻿Product_Name,Product_SKU,Component_Material,Material_Code,Quantity,Component_UoM
+أصابع بصل,CRISPYSAF8,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع بصل,CRISPYSAF8,شابورة اصابع بصل والكريمة الحامضة,Onion & Sour Cream Finger Rusk,0.07,Kilograms
+أصابع بصل,CRISPYSAF8,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع جبنة,CRISPYSAF3,شابورة اصابع جبنة,Cheese Finger Rusk,0.07,Kilograms
+أصابع جبنة,CRISPYSAF3,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع جبنة,CRISPYSAF3,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع حبة البركة,CRISPYSAF11,شابورة اصابع حبة البركة,Black Seed Finger Rusk,0.07,Kilograms
+أصابع حبة البركة,CRISPYSAF11,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع حبة البركة,CRISPYSAF11,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع حبة زبدة,CRISPYSAF6,شابورة اصابع زبدة,Butter Finger Rusk,0.07,Kilograms
+أصابع حبة زبدة,CRISPYSAF6,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع حبة زبدة,CRISPYSAF6,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع خضار,CRISPYSAF1,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع خضار,CRISPYSAF1,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع خضار,CRISPYSAF1,شابورة اصابع خضار,Vegetable Finger Rusk,0.07,Kilograms
+أصابع ذره حلوه,CRISPYSAF7,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع ذره حلوه,CRISPYSAF7,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع ذره حلوه,CRISPYSAF7,شابورة اصابع ذرة حلوة,Sweet Corn Finger Rusk,0.07,Kilograms
+أصابع زعتر,CRISPYSAF4,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع زعتر,CRISPYSAF4,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع زعتر,CRISPYSAF4,شابورة اصابع زعتر,Thyme Finger Rusk,0.07,Kilograms
+أصابع شطة,CRISPYSAF2,شابورة اصابع شطة,Chili Finger Rusk,0.07,Kilograms
+أصابع شطة,CRISPYSAF2,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع شطة,CRISPYSAF2,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع كتشب,CRISPYSAF5,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع كتشب,CRISPYSAF5,شابورة اصابع كاتشب,Ketchup Finger Rusk,0.07,Kilograms
+أصابع كتشب,CRISPYSAF5,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع ليمون وكمون,CRISPYSAF10,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع ليمون وكمون,CRISPYSAF10,شابورة اصابع ليمون وكمون,Lemon & Cumin Finger Rusk,0.07,Kilograms
+أصابع ليمون وكمون,CRISPYSAF10,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع مشاوي,CRISPYSAF9,شابورة اصابع نكهة مشاوي,Grill Flavor Finger Rusk,0.07,Kilograms
+أصابع مشاوي,CRISPYSAF9,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع مشاوي,CRISPYSAF9,استيكر شابورة,Rusk Sticker,2.0,pcs
+أصابع يانسون,CRISPYSAF0,شابورة اصابع يانسون,Anise Finger Rusk,0.07,Kilograms
+أصابع يانسون,CRISPYSAF0,برطمان اجبان وزيتون وشابورة,"Jar of Cheese, Olives, & Rusk",1.0,pcs
+أصابع يانسون,CRISPYSAF0,استيكر شابورة,Rusk Sticker,2.0,pcs
+بكج المخللات الصغير,MQL-PK02,زيتون اسود محشي بالجبنة,MQL-BOS-04,1.0,pcs
+بكج المخللات الصغير,MQL-PK02,فلفل كرزي محشي بالجبنة,MQL-CHP-01,1.0,pcs
+بكج المخللات الصغير,MQL-PK02,زيتون مشوي,MQL-RO-03,1.0,pcs
+بكج المخللات الصغير,MQL-PK02,فلفل اصفر محشي بالجبنة,MQL-YP-02,1.0,pcs
+بكج حمص صفوة الجوف 12 عبوة,hmousbox12,حمص صفوة الجوف,hmous1,12.0,pcs
+بوكس زيت زيتون 5 لتر,OLIVEOILE5000B,كرتون زيت 5 لتر,Carton of 5Liter Oil,1.0,pcs
+بوكس زيت زيتون 5 لتر,OLIVEOILE5000B,كيس زيت 5 لتر,Oil Bag 5 Liters,1.0,BAG
+بوكس زيت زيتون 5 لتر,OLIVEOILE5000B,زيت زيتون خام,Raw Olive Oil,5.0,liter
+تستي قرانولا,GRN-TST-004,كيس قرانوالا فارغ,BAG-GRANOLA-EMPTY,1.0,BAG
+تستي قرانولا,GRN-TST-004,علب قرانولا فارغة,BOX-GRANOLA-EMPTY,1.0,pcs
+تستي قرانولا,GRN-TST-004,عنصر قرانولا سوبر فود,GRANOLA-SUPERFOOD,0.3,pcs
+تستي قرانولا,GRN-TST-004,استيكر قرانولا,STKR-GRANOLA,1.0,pcs
+زعتر بري فاخر 0.5 كيلو,THYME500M,زعتر خام,Raw Thyme,0.51,Kilograms
+زعتر بري فاخر 0.5 كيلو,THYME500M,تعبئة زعتر خام,Raw Thyme Packaging,1.0,service
+زعتر بري فاخر 0.5 كيلو,THYME500M,كيس زعتر نصف ك,Thyme Bag 500 g,1.0,BAG
+زعتر بري فاخر 1 كيلو,THYME1000M,زعتر خام,Raw Thyme,1.01,Kilograms
+زعتر بري فاخر 1 كيلو,THYME1000M,تعبئة زعتر خام,Raw Thyme Packaging,1.0,service
+زعتر بري فاخر 1 كيلو,THYME1000M,كيس زعتر 1ك,Thyme Bag 1 kg,1.0,BAG
+زعتر بري فاخر ربع كيلو,THYME250M,زعتر خام,Raw Thyme,0.26,Kilograms
+زعتر بري فاخر ربع كيلو,THYME250M,تعبئة زعتر خام,Raw Thyme Packaging,1.0,service
+زعتر بري فاخر ربع كيلو,THYME250M,كيس زعتر ربع ك,Thyme Bag 250 g,1.0,BAG
+زيت زيتون بكر قطفة أولى 1لتر,OLIVEOILE1000M,تنك زيت 1 لتر,1-Liter Oil Tin,1.0,pcs
+زيت زيتون بكر قطفة أولى 1لتر,OLIVEOILE1000M,زيت زيتون خام,Raw Olive Oil,1.0,liter
+زيت زيتون بكر قطفة أولى 250 مل,250 ml Olive Oil,استيكر زيت 250م,250 ml Oil Sticker,1.0,pcs
+زيت زيتون بكر قطفة أولى 250 مل,250 ml Olive Oil,زجاج 250 م بدون استيكر,OLIVEOILE250M,1.0,pcs
+زيت زيتون بكر قطفة أولى 2لتر,OLIVEOILE2000M,تنك زيت 2 لتر,2-Liter Oil Tin,1.0,pcs
+زيت زيتون بكر قطفة أولى 2لتر,OLIVEOILE2000M,زيت زيتون خام,Raw Olive Oil,2.0,liter
+زيت زيتون بكر قطفة أولى 3 لتر,BXTH51003,كرتون زيت 3 لتر,Carton of 3-Liter Oil,1.0,pcs
+زيت زيتون بكر قطفة أولى 3 لتر,BXTH51003,كيس زيت 3 لتر,Oil Bag 3 Liters,1.0,BAG
+زيت زيتون بكر قطفة أولى 3 لتر,BXTH51003,زيت زيتون خام,Raw Olive Oil,3.0,liter
+زيت زيتون بكر قطفة أولى 4لتر,OLIVEOILE4000M,تنك زيت4 لتر,4-Liter Oil Tin,1.0,pcs
+زيت زيتون بكر قطفة أولى 4لتر,OLIVEOILE4000M,زيت زيتون خام,Raw Olive Oil,4.0,liter
+زيت زيتون بكر قطفة أولى 500 مل,500 ml Olive Oil,استيكر زيت 500م,500 ml Oil Sticker,1.0,pcs
+زيت زيتون بكر قطفة أولى 500 مل,500 ml Olive Oil,زجاج 500 م بدون استيكر,OLIVEOILE500M,1.0,pcs
+عسل سدر 0.5 كيلو,HONY500M,استيكر عسل 500 جرام,500g Honey Sticker,2.0,pcs
+عسل سدر 0.5 كيلو,HONY500M,كرتون عسل نصف كيلو,Carton of Honey 500 g,1.0,pcs
+عسل سدر 0.5 كيلو,HONY500M,برطمان عسل نصف كيلو,Jar of Honey 500 g,1.0,pcs
+عسل سدر 0.5 كيلو,HONY500M,عسل سدر خام,Raw Sidr Honey,0.5,Kilograms
+عسل سدر 1كيلو,HONY1000M,استيكر عسل كيلو,1 kg Honey Sticker,2.0,pcs
+عسل سدر 1كيلو,HONY1000M,كرتون عسل1 ك,Carton of Honey 1 kg,1.0,pcs
+عسل سدر 1كيلو,HONY1000M,برطمان عسل1 ك,Jar of Honey 1 kg,1.0,pcs
+عسل سدر 1كيلو,HONY1000M,عسل سدر خام,Raw Sidr Honey,1.0,Kilograms
+عسل سدر ربع كيلو,HONY250M,استيكر عسل ربع كيلو,250g Honey Sticker,2.0,pcs
+عسل سدر ربع كيلو,HONY250M,كرتون عسل ربع كيلو,Carton of Honey 250 g,1.0,pcs
+عسل سدر ربع كيلو,HONY250M,برطمان عسل ربع كيلو,Jar of Honey 250 g,1.0,pcs
+عسل سدر ربع كيلو,HONY250M,عسل سدر خام,Raw Sidr Honey,0.25,Kilograms
+قرانولا التمر والهيل,GRN-TM-HL-002,كيس قرانوالا فارغ,BAG-GRANOLA-EMPTY,1.0,BAG
+قرانولا التمر والهيل,GRN-TM-HL-002,علب قرانولا فارغة,BOX-GRANOLA-EMPTY,1.0,pcs
+قرانولا التمر والهيل,GRN-TM-HL-002,عنصر قرانولا التمر والهيل,ITEM-GRN-TM-HL-002,0.3,pcs
+قرانولا التمر والهيل,GRN-TM-HL-002,استيكر قرانولا,STKR-GRANOLA,1.0,pcs
+قرانولا الزعتر,GRN-ZA-001,كيس قرانوالا فارغ,BAG-GRANOLA-EMPTY,1.0,BAG
+قرانولا الزعتر,GRN-ZA-001,علب قرانولا فارغة,BOX-GRANOLA-EMPTY,1.0,pcs
+قرانولا الزعتر,GRN-ZA-001,عنصر قرانولا بالزعتر والسمسم,GRANOLA-THYME-SESAME,0.3,pcs
+قرانولا الزعتر,GRN-ZA-001,استيكر قرانولا,STKR-GRANOLA,1.0,pcs
+قرانولا الفول السوداني والتشوكليت,GRN-PN-CH-003,كيس قرانوالا فارغ,BAG-GRANOLA-EMPTY,1.0,BAG
+قرانولا الفول السوداني والتشوكليت,GRN-PN-CH-003,علب قرانولا فارغة,BOX-GRANOLA-EMPTY,1.0,pcs
+قرانولا الفول السوداني والتشوكليت,GRN-PN-CH-003, عنصر قرانولا بالفول السوداني والشوكلاتة ,GRANOLA-PEANUT-CHOCOLATE,0.3,pcs
+قرانولا الفول السوداني والتشوكليت,GRN-PN-CH-003,استيكر قرانولا,STKR-GRANOLA,1.0,pcs
+مقرمشات الجبن,CRACKC1,100غ مقرمشات جبنة,100g Cheese Snacks,1.0,pcs
+مقرمشات الجبن,CRACKC1,برطمان مقرمشات,Jar of Snacks,1.0,pcs
+مقرمشات الجبن,CRACKC1,استيكر مقرمشات صحية,Healthy Snack Sticker,2.0,pcs
+مقرمشات الزعتر,CRACKZ1,100غ مقرمشات زعتر,100g Thyme Snacks,1.0,pcs
+مقرمشات الزعتر,CRACKZ1,برطمان مقرمشات,Jar of Snacks,1.0,pcs
+مقرمشات الزعتر,CRACKZ1,برطمان مقرمشات,Jar of Snacks,1.0,pcs
+مقرمشات السماق,CRACKS1,100غ مقرمشات سماق,100g Sumac Snacks,1.0,pcs
+مقرمشات السماق,CRACKS1,برطمان مقرمشات,Jar of Snacks,1.0,pcs
+مقرمشات السماق,CRACKS1,استيكر مقرمشات صحية,Healthy Snack Sticker,2.0,pcs
+مقرمشات حارة,CRACKH1,100غ مقرمشات فلفل حار,100g Spicy Snacks,1.0,pcs
+مقرمشات حارة,CRACKH1,برطمان مقرمشات,Jar of Snacks,1.0,pcs
+مقرمشات حارة,CRACKH1,استيكر مقرمشات صحية,Healthy Snack Sticker,2.0,pcs
+مقرمشات ميلفية بذور الكتان,MF-CR-LS001,برطمان مقرمشات,Jar of Snacks,1.0,pcs
+مقرمشات ميلفية بذور الكتان,MF-CR-LS001,عنصر ملفيه بذر الكتان والسكر,MF–FLX,1.0,pcs
+مقرمشات ميلفية بذور الكتان,MF-CR-LS001,استيكر ملفيه,STKR-MLF,2.0,pcs
+مقرمشات ميلفية حبة البركة,MF-CR-NB003,برطمان مقرمشات,Jar of Snacks,1.0,pcs
+مقرمشات ميلفية حبة البركة,MF-CR-NB003,عنصر ملفيه حبة البركة والسكر,MF–HBR,1.0,pcs
+مقرمشات ميلفية حبة البركة,MF-CR-NB003,استيكر ملفيه,STKR-MLF,2.0,pcs
+مقرمشات ميلفية سادة,MF-CR-PL002,برطمان مقرمشات,Jar of Snacks,1.0,pcs
+مقرمشات ميلفية سادة,MF-CR-PL002,عنصر ملفيه سكر,MF–SGR,1.0,pcs
+مقرمشات ميلفية سادة,MF-CR-PL002,استيكر ملفيه,STKR-MLF,2.0,pcs
