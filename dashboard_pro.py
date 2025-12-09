@@ -155,7 +155,7 @@ with st.sidebar:
 # PAGE: Dashboard
 # =======================
 if st.session_state.page == 'dashboard':
-    UI Components.render_section_header(
+    UIComponents.render_section_header(
         "لوحة التحكم الرئيسية",
         "نظرة شاملة على نظام التسعير",
         "🏠"
