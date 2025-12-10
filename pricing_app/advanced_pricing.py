@@ -156,30 +156,16 @@ def calculate_price_breakdown(
             custom_fees_dict[fee_name] = fee_amount
             custom_fees_total += fee_amount
     
-    # الآن نحدد ما إذا كان الشحن والتجهيز مجاني بناءً على الحد الأدنى
-    # المنطق الجديد:
-    # 1. إذا كان price_before_discount < free_shipping_threshold، نتحقق:
-    #    - هل السعر الحالي يحقق هامش ربح معقول بدون شحن/تحضير؟
-    #    - إذا نعم → actual_shipping = actual_preparation = 0
-    # 2. إذا لم يحقق الهامش المطلوب → نضيف الشحن والتحضير
+    # تحديد ما إذا كان الشحن والتجهيز مجاني بناءً على حد منصة سلة
+    # قاعدة سلة البسيطة: إذا السعر النهائي < 98 ريال → شحن وتحضير = 0 (تلقائياً)
+    # إذا السعر >= 98 ريال → يدفع العميل الشحن والتحضير كاملاً
     
     if free_shipping_threshold > 0 and price_before_discount < free_shipping_threshold:
-        # نحسب الهامش بدون شحن/تحضير
-        total_fees_without_ship = admin_fee + marketing_fee + platform_fee + custom_fees_total
-        profit_without_ship = net_price_excl_vat_and_discount - cogs - total_fees_without_ship
-        margin_without_ship = (profit_without_ship / net_price_excl_vat_and_discount) if net_price_excl_vat_and_discount > 0 else 0
-        
-        # إذا الهامش بدون شحن/تحضير >= 5% (حد أدنى معقول)، نستخدم الشحن المجاني
-        # يمكن تعديل هذا الحد حسب الحاجة
-        if margin_without_ship >= 0.05:
-            actual_shipping = 0
-            actual_preparation = 0
-        else:
-            # الهامش ضعيف، نحتاج إضافة الشحن والتحضير
-            actual_shipping = shipping
-            actual_preparation = preparation
+        # السعر أقل من الحد → شحن وتحضير مجاني حسب سياسة المنصة
+        actual_shipping = 0
+        actual_preparation = 0
     else:
-        # السعر أعلى من الحد أو لا يوجد حد → نضيف الرسوم
+        # السعر أعلى من الحد أو لا يوجد حد → نضيف الرسوم كاملة
         actual_shipping = shipping
         actual_preparation = preparation
 
