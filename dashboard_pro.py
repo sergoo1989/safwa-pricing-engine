@@ -18,11 +18,10 @@ import zipfile
 import io
 import sqlite3
 
-# ========== تحسينات الأداء ==========
-# تقليل حجم الصفحة
+# Page Configuration
 st.set_page_config(
-    page_title="محرك تسعير صفوة",
-    page_icon="💰",
+    page_title="محرك تسعير صفوة - Professional",
+    page_icon="💎",
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
@@ -35,10 +34,6 @@ st.set_page_config(
 # تحسين التخزين المؤقت
 if 'cache_ttl' not in st.session_state:
     st.session_state.cache_ttl = 3600  # ساعة واحدة
-
-st.set_page_config(
-    page_title="محرك تسعير صفوة - Professional", page_icon="💎", layout="wide", initial_sidebar_state="expanded"
-)
 
 # Professional CSS Styling
 st.markdown(
