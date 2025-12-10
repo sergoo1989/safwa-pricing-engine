@@ -173,13 +173,29 @@ def calculate_price_breakdown(
     total_pct_fees = admin_pct + marketing_pct + payment_pct + platform_pct + custom_pct_fees
 
     def price_for_margin(target_margin: float) -> float:
-        """سعر البيع شامل الضريبة قبل الخصم لتحقيق هامش مستهدف."""
+        """سعر البيع شامل الضريبة قبل الخصم لتحقيق هامش مستهدف مع احترام شرط الشحن المجاني."""
+
         denom = 1 - total_pct_fees - target_margin
         if denom <= 0 or discount_rate >= 1:
             return 0
-        net_required = (cogs + actual_shipping + actual_preparation + custom_fixed_fees) / denom
-        sale_with_vat_before_discount = (net_required * (1 + vat_rate)) / (1 - discount_rate)
-        return sale_with_vat_before_discount
+
+        def calc_price(fixed_costs: float) -> float:
+            net_required = fixed_costs / denom
+            return (net_required * (1 + vat_rate)) / (1 - discount_rate)
+
+        # حالتان: مع رسوم شحن/تحضير، وبدون (إذا كان السعر سيقع تحت العتبة)
+        price_with_fees = calc_price(cogs + shipping + preparation + custom_fixed_fees)
+        price_free_fees = calc_price(cogs + custom_fixed_fees)
+
+        if free_shipping_threshold > 0:
+            # إذا السعر بدون رسوم يقع تحت العتبة → معاملة الشحن/التحضير كـ 0
+            if price_free_fees > 0 and price_free_fees < free_shipping_threshold:
+                return price_free_fees
+            # otherwise السعر أعلى أو لا يمكن حسابه → نستخدم السيناريو مع الرسوم
+            return price_with_fees if price_with_fees > 0 else price_free_fees
+
+        # لا توجد عتبة للشحن المجاني
+        return price_with_fees
 
     margin_prices = {
         0.00: price_for_margin(0.00),
