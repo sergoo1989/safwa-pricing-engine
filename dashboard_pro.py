@@ -1854,7 +1854,7 @@ elif st.session_state.page == "pricing":
                 # السعر شامل الضريبة قبل الخصم
                 price_before_discount = price_with_vat_after_discount / (1 - discount_rate)
                 
-                # احسب التفصيل الكامل مع تمرير الهامش المستهدف
+                # احسب التفصيل الكامل
                 bd = calculate_price_breakdown(
                     cogs=cogs,
                     channel_fees=channel_dict,
@@ -1864,8 +1864,7 @@ elif st.session_state.page == "pricing":
                     vat_rate=vat_rate,
                     free_shipping_threshold=free_threshold,
                     custom_fees=custom_fees,
-                    price_with_vat=price_before_discount,
-                    target_margin=target_margin_val,
+                    price_with_vat=price_before_discount
                 )
                 
                 return price_before_discount, bd
