@@ -81,7 +81,8 @@ def calculate_price_breakdown(
     vat_rate: float = 0.15,
     free_shipping_threshold: float = 0,
     custom_fees: Dict = None,
-    price_with_vat: float = None
+    price_with_vat: float = None,
+    target_margin: float = 0.10
 ) -> Dict:
     """
     حساب السعر الكامل مع تفاصيل التكاليف والرسوم
@@ -118,8 +119,7 @@ def calculate_price_breakdown(
         # D = السعر الصافي بدون ضريبة بعد الخصم
         net_price_excl_vat_and_discount = price_after_discount / (1 + vat_rate)
     else:
-        # حساب السعر الذكي: نجرب تحقيق هامش 10% تحت حد 98 أولاً
-        target_margin = 0.10  # هامش مستهدف 10%
+        # حساب السعر الذكي: نجرب تحقيق الهامش المستهدف تحت حد 98 أولاً
         total_fees_pct = admin_pct + marketing_pct + platform_pct
         
         # نجرب: هل يمكن تحقيق الهامش بدون شحن/تحضير؟
@@ -271,14 +271,15 @@ def calculate_price_breakdown(
     }
 
 def create_pricing_table(item_sku: str, item_type: str, cogs: float, channel_fees: Dict, 
-                         shipping: float = 0, preparation: float = 0) -> pd.DataFrame:
+                         shipping: float = 0, preparation: float = 0, target_margin: float = 0.10) -> pd.DataFrame:
     """إنشاء جدول تفاصيل التسعير الكامل"""
     
     breakdown = calculate_price_breakdown(
         cogs=cogs,
         channel_fees=channel_fees,
         shipping=shipping,
-        preparation=preparation
+        preparation=preparation,
+        target_margin=target_margin
     )
     
     # بناء الجدول حسب الصورة
