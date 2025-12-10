@@ -102,6 +102,24 @@ class SallaInsights:
         # تحميل المواد الخام للرجوع إليها لاحقاً إذا احتجناها
         if Path(raw_materials_file).exists():
             self.raw_materials_df = pd.read_csv(raw_materials_file)
+
+        # محاولة تحميل COGS مباشر من ملف سلة المفكك إذا كان متوفراً (تغطية للـ SKU غير الموجودة في ملفات التسعير)
+        salla_cogs_file = Path(data_dir) / "salla_sales_with_cogs.csv"
+        if salla_cogs_file.exists():
+            try:
+                salla_cogs_df = pd.read_csv(salla_cogs_file, usecols=["sku_code", "unit_cogs"], low_memory=False)
+                salla_cogs_df = salla_cogs_df.dropna(subset=["sku_code", "unit_cogs"])
+                salla_cogs_df = salla_cogs_df.groupby("sku_code").first().reset_index()
+                salla_cogs_df.columns = ["SKU", "COGS"]
+                # دمج: نضيف أي SKU غير موجود بالفعل
+                if not salla_cogs_df.empty:
+                    existing_skus = set(self.products_df["SKU"].unique()) if self.products_df is not None else set()
+                    extra_rows = salla_cogs_df[~salla_cogs_df["SKU"].isin(existing_skus)].copy()
+                    extra_rows["Product_Name"] = extra_rows["SKU"]
+                    self.products_df = pd.concat([self.products_df, extra_rows], ignore_index=True)
+            except Exception:
+                # في حالة أي خطأ نتجاهل ونكمل بالبيانات المتاحة
+                pass
     
     def get_missing_skus(self):
         """
