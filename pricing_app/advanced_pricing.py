@@ -131,18 +131,7 @@ def calculate_price_breakdown(
         discount_amount = price_before_discount * discount_rate
         price_after_discount = price_with_vat_calc
     
-    # تحديد ما إذا كان الشحن والتجهيز مجاني بناءً على الحد الأدنى
-    # إذا لم يتم تعيين حد أدنى (0)، يتم تطبيق الرسوم دائماً
-    # إذا تم تعيين حد أدنى وتجاوز السعر الحد الأدنى، تصبح الرسوم مجانية
-    # الشرط المطلوب: سعر البيع شامل الضريبة قبل الخصم < الحد ⇒ شحن وتجهيز = 0
-    if free_shipping_threshold > 0 and price_before_discount < free_shipping_threshold:
-        actual_shipping = 0
-        actual_preparation = 0
-    else:
-        actual_shipping = shipping
-        actual_preparation = preparation
-    
-    # حساب الرسوم على السعر الصافي (D)
+    # حساب الرسوم على السعر الصافي (D) أولاً
     admin_fee = net_price_excl_vat_and_discount * admin_pct      # H = D × نسبة
     marketing_fee = net_price_excl_vat_and_discount * marketing_pct  # I = D × نسبة
     platform_fee = net_price_excl_vat_and_discount * platform_pct    # K = D × نسبة
@@ -166,12 +155,45 @@ def calculate_price_breakdown(
                 custom_fixed_fees += fee_amount
             custom_fees_dict[fee_name] = fee_amount
             custom_fees_total += fee_amount
+    
+    # الآن نحدد ما إذا كان الشحن والتجهيز مجاني بناءً على الحد الأدنى
+    # المنطق الجديد:
+    # 1. إذا كان price_before_discount < free_shipping_threshold، نتحقق:
+    #    - هل السعر الحالي يحقق هامش ربح معقول بدون شحن/تحضير؟
+    #    - إذا نعم → actual_shipping = actual_preparation = 0
+    # 2. إذا لم يحقق الهامش المطلوب → نضيف الشحن والتحضير
+    
+    if free_shipping_threshold > 0 and price_before_discount < free_shipping_threshold:
+        # نحسب الهامش بدون شحن/تحضير
+        total_fees_without_ship = admin_fee + marketing_fee + platform_fee + custom_fees_total
+        profit_without_ship = net_price_excl_vat_and_discount - cogs - total_fees_without_ship
+        margin_without_ship = (profit_without_ship / net_price_excl_vat_and_discount) if net_price_excl_vat_and_discount > 0 else 0
+        
+        # إذا الهامش بدون شحن/تحضير >= 5% (حد أدنى معقول)، نستخدم الشحن المجاني
+        # يمكن تعديل هذا الحد حسب الحاجة
+        if margin_without_ship >= 0.05:
+            actual_shipping = 0
+            actual_preparation = 0
+        else:
+            # الهامش ضعيف، نحتاج إضافة الشحن والتحضير
+            actual_shipping = shipping
+            actual_preparation = preparation
+    else:
+        # السعر أعلى من الحد أو لا يوجد حد → نضيف الرسوم
+        actual_shipping = shipping
+        actual_preparation = preparation
 
     # Step 3: حساب الربح ونقاط التسعير للهوامش المختلفة
     total_pct_fees = admin_pct + marketing_pct + platform_pct + custom_pct_fees  # مجموع النسب
 
     def price_for_margin(target_margin: float) -> float:
-        """سعر البيع شامل الضريبة قبل الخصم لتحقيق هامش مستهدف مع احترام شرط الشحن المجاني."""
+        """سعر البيع شامل الضريبة قبل الخصم لتحقيق هامش مستهدف مع احترام شرط الشحن المجاني.
+        
+        المنطق الجديد:
+        1. نحاول أولاً حساب السعر بدون شحن/تحضير
+        2. إذا كان هذا السعر < حد الشحن المجاني (98) ويحقق الهامش المطلوب → نستخدمه
+        3. وإلا نضيف الشحن والتحضير ونحسب السعر الذي يحقق الهامش
+        """
 
         denom = 1 - total_pct_fees - target_margin
         if denom <= 0 or discount_rate >= 1:
@@ -181,19 +203,22 @@ def calculate_price_breakdown(
             net_required = fixed_costs / denom
             return (net_required * (1 + vat_rate)) / (1 - discount_rate)
 
-        # حالتان: مع رسوم شحن/تحضير، وبدون (إذا كان السعر سيقع تحت العتبة)
-        price_with_fees = calc_price(cogs + shipping + preparation + custom_fixed_fees)
-        price_free_fees = calc_price(cogs + custom_fixed_fees)
-
         if free_shipping_threshold > 0:
-            # إذا السعر بدون رسوم يقع تحت العتبة → معاملة الشحن/التحضير كـ 0
+            # أولاً: نجرب السعر بدون شحن/تحضير
+            price_free_fees = calc_price(cogs + custom_fixed_fees)
+            
+            # إذا السعر بدون رسوم يقع تحت العتبة ويحقق الهامش المطلوب
             if price_free_fees > 0 and price_free_fees < free_shipping_threshold:
+                # هذا يعني أن العميل سيحصل على شحن مجاني
+                # والسعر هذا يحقق الهامش المطلوب بدون إضافة تكاليف شحن/تحضير
                 return price_free_fees
-            # otherwise السعر أعلى أو لا يمكن حسابه → نستخدم السيناريو مع الرسوم
+            
+            # ثانياً: إذا السعر >= العتبة أو لا يحقق الهامش، نضيف الشحن والتحضير
+            price_with_fees = calc_price(cogs + shipping + preparation + custom_fixed_fees)
             return price_with_fees if price_with_fees > 0 else price_free_fees
 
-        # لا توجد عتبة للشحن المجاني
-        return price_with_fees
+        # لا توجد عتبة للشحن المجاني → دائماً نضيف الرسوم
+        return calc_price(cogs + shipping + preparation + custom_fixed_fees)
 
     margin_prices = {
         0.00: price_for_margin(0.00),
