@@ -269,9 +269,11 @@ class SallaInsights:
                     'عدد مرات الشراء معًا': count
                 })
         
-        assoc_df = pd.DataFrame(assoc_list)
+        assoc_df = pd.DataFrame(assoc_list, columns=['المنتج الأول', 'اسم الأول', 'المنتج الثاني', 'اسم الثاني', 'عدد مرات الشراء معًا'])
+        if assoc_df.empty:
+            return assoc_df
+
         assoc_df = assoc_df.sort_values('عدد مرات الشراء معًا', ascending=False)
-        
         return assoc_df
     
     def suggest_bundles(self, min_frequency=3, min_qty=5):
