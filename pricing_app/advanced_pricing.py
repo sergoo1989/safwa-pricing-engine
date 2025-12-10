@@ -135,8 +135,8 @@ def calculate_price_breakdown(
     # تحديد ما إذا كان الشحن والتجهيز مجاني بناءً على الحد الأدنى
     # إذا لم يتم تعيين حد أدنى (0)، يتم تطبيق الرسوم دائماً
     # إذا تم تعيين حد أدنى وتجاوز السعر الحد الأدنى، تصبح الرسوم مجانية
-    # نستخدم السعر بعد الخصم لأن هذا ما يدفعه العميل فعلياً
-    if free_shipping_threshold > 0 and price_after_discount >= free_shipping_threshold:
+    # الشرط المطلوب: سعر البيع شامل الضريبة قبل الخصم < الحد ⇒ شحن وتجهيز = 0
+    if free_shipping_threshold > 0 and price_before_discount < free_shipping_threshold:
         actual_shipping = 0
         actual_preparation = 0
     else:

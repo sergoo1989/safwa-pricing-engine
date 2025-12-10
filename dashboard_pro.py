@@ -1869,11 +1869,12 @@ elif st.session_state.page == "pricing":
                     
                     # التحقق: هل افتراضنا بشأن الشحن المجاني صحيح؟
                     if free_threshold > 0:
-                        if assume_free_shipping and price_with_vat_after_discount >= free_threshold:
-                            # صحيح: السعر >= العتبة والشحن مجاني
+                        # الشرط: سعر البيع شامل الضريبة قبل الخصم < الحد ⇒ شحن وتجهيز = 0
+                        if assume_free_shipping and price_before_discount < free_threshold:
+                            # صحيح: السعر أقل من الحد والشحن مجاني
                             break
-                        elif not assume_free_shipping and price_with_vat_after_discount < free_threshold:
-                            # صحيح: السعر < العتبة والشحن مدفوع
+                        elif not assume_free_shipping and price_before_discount >= free_threshold:
+                            # صحيح: السعر أكبر أو يساوي الحد والشحن مدفوع
                             break
                     else:
                         # لا توجد عتبة - الشحن دائماً مدفوع
