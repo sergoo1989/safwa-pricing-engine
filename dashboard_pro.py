@@ -2880,126 +2880,45 @@ elif st.session_state.page == "custom_package":
                     "platform": channel_dict.get("platform_pct", 0),
                 }
 
-                # Breakeven breakdown (Goal Seek: margin = 0%)
-                breakeven_margin = 0.0
-                
-                # حساب أولي لسعر التعادل لفحص الحد الأدنى للشحن (نفترض مجاني)
-                temp_breakeven_denom = 1 - total_pct - breakeven_margin
-                if temp_breakeven_denom <= 0 or (1 - discount_pct) <= 0:
-                    breakeven_shipping = 0
-                    breakeven_preparation = 0
-                else:
-                    temp_breakeven_fixed = total_package_cost + 0 + 0 + custom_fixed
-                    temp_breakeven_net = temp_breakeven_fixed / temp_breakeven_denom
-                    temp_breakeven_after_discount = temp_breakeven_net * (1 + vat_rate)
-                    temp_breakeven_list = temp_breakeven_after_discount / (1 - discount_pct)
-                    
-                    # فحص: إذا السعر ≤ الحد → شحن مجاني، إذا > الحد → احسب رسوم
-                    if free_threshold > 0 and temp_breakeven_list <= free_threshold:
-                        breakeven_shipping = 0
-                        breakeven_preparation = 0
-                    else:
-                        breakeven_shipping = shipping
-                        breakeven_preparation = preparation
-                
-                # إعادة الحساب بالرسوم الفعلية
-                breakeven_fixed_costs = total_package_cost + breakeven_shipping + breakeven_preparation + custom_fixed
-                breakeven_denom = 1 - total_pct - breakeven_margin
-                
-                if breakeven_denom <= 0 or (1 - discount_pct) <= 0:
-                    breakeven_net = 0
-                    breakeven_price_after_discount = 0
-                    breakeven_list_price = 0
-                    breakeven_discount = 0
-                    breakeven_admin = 0
-                    breakeven_marketing = 0
-                    breakeven_platform = 0
-                    breakeven_profit = 0
-                else:
-                    breakeven_net = breakeven_fixed_costs / breakeven_denom
-                    breakeven_price_after_discount = breakeven_net * (1 + vat_rate)
-                    breakeven_list_price = breakeven_price_after_discount / (1 - discount_pct)
-                    breakeven_discount = breakeven_list_price * discount_pct
-                    breakeven_admin = breakeven_net * admin_pct
-                    breakeven_marketing = breakeven_net * marketing_pct
-                    breakeven_platform = breakeven_net * platform_pct
-                    breakeven_profit = breakeven_net - (total_package_cost + breakeven_shipping + breakeven_preparation + breakeven_admin + breakeven_marketing + breakeven_platform + custom_fees_total)
-                
-                breakeven_breakdown = {
-                    "sale_price": breakeven_list_price,
-                    "discount_amount": breakeven_discount,
-                    "discount_rate": discount_pct,
-                    "price_after_discount": breakeven_price_after_discount,
-                    "vat_rate": vat_rate,
-                    "net_price": breakeven_net,
-                    "custom_fees": custom_fees_dict,
-                    "custom_fees_total": custom_fees_total,
-                    "cogs": total_package_cost,
-                    "preparation_fee": breakeven_preparation,
-                    "shipping_fee": breakeven_shipping,
-                    "admin_fee": breakeven_admin,
-                    "marketing_fee": breakeven_marketing,
-                    "platform_fee": breakeven_platform,
-                    "total_costs_fees": total_package_cost + breakeven_shipping + breakeven_preparation + breakeven_admin + breakeven_marketing + breakeven_platform + custom_fees_total,
-                    "profit": breakeven_profit,
-                    "margin_pct": breakeven_margin,
-                }
+                # Breakeven breakdown (Goal Seek: margin = 0%) باستخدام نفس منطق العتبة
+                be_calc = calculate_price_breakdown(
+                    cogs=total_package_cost,
+                    channel_fees=channel_dict,
+                    shipping=shipping,
+                    preparation=preparation,
+                    discount_rate=discount_pct,
+                    vat_rate=vat_rate,
+                    free_shipping_threshold=free_threshold,
+                    custom_fees=custom_fees,
+                    price_with_vat=None,
+                )
+                breakeven_list_price = be_calc["margin_prices"][0.00]
+                breakeven_breakdown = calculate_price_breakdown(
+                    cogs=total_package_cost,
+                    channel_fees=channel_dict,
+                    shipping=shipping,
+                    preparation=preparation,
+                    discount_rate=discount_pct,
+                    vat_rate=vat_rate,
+                    free_shipping_threshold=free_threshold,
+                    custom_fees=custom_fees,
+                    price_with_vat=breakeven_list_price,
+                )
 
                 # Competitor breakdown (if provided)
                 competitor_breakdown = None
                 if competitor_price and competitor_price > 0:
-                    # حساب عكسي من السعر المدخل
-                    comp_list_price = competitor_price
-                    comp_discount = comp_list_price * discount_pct
-                    comp_after_discount = comp_list_price - comp_discount
-                    comp_net = comp_after_discount / (1 + vat_rate)
-                    
-                    # فحص: إذا السعر ≤ الحد → شحن مجاني، إذا > الحد → احسب رسوم
-                    if free_threshold > 0 and comp_list_price <= free_threshold:
-                        comp_shipping = 0
-                        comp_preparation = 0
-                    else:
-                        comp_shipping = shipping
-                        comp_preparation = preparation
-                    
-                    comp_admin = comp_net * admin_pct
-                    comp_marketing = comp_net * marketing_pct
-                    comp_platform = comp_net * platform_pct
-                    
-                    comp_custom_total = custom_fixed
-                    comp_custom_dict = {}
-                    if custom_fees:
-                        for fee_name, fee_data in custom_fees.items():
-                            if fee_data.get("fee_type") == "percentage":
-                                fee_amt = comp_net * fee_data.get("amount", 0)
-                                comp_custom_total += fee_amt
-                            else:
-                                fee_amt = fee_data.get("amount", 0)
-                            comp_custom_dict[fee_name] = fee_amt
-                    
-                    comp_total_costs = total_package_cost + comp_shipping + comp_preparation + comp_admin + comp_marketing + comp_platform + comp_custom_total
-                    comp_profit = comp_net - comp_total_costs
-                    comp_margin = (comp_profit / comp_net) if comp_net > 0 else 0
-                    
-                    competitor_breakdown = {
-                        "sale_price": comp_list_price,
-                        "discount_amount": comp_discount,
-                        "discount_rate": discount_pct,
-                        "price_after_discount": comp_after_discount,
-                        "vat_rate": vat_rate,
-                        "net_price": comp_net,
-                        "custom_fees": comp_custom_dict,
-                        "custom_fees_total": comp_custom_total,
-                        "cogs": total_package_cost,
-                        "preparation_fee": comp_preparation,
-                        "shipping_fee": comp_shipping,
-                        "admin_fee": comp_admin,
-                        "marketing_fee": comp_marketing,
-                        "platform_fee": comp_platform,
-                        "total_costs_fees": comp_total_costs,
-                        "profit": comp_profit,
-                        "margin_pct": comp_margin,
-                    }
+                    competitor_breakdown = calculate_price_breakdown(
+                        cogs=total_package_cost,
+                        channel_fees=channel_dict,
+                        shipping=shipping,
+                        preparation=preparation,
+                        discount_rate=discount_pct,
+                        vat_rate=vat_rate,
+                        free_shipping_threshold=free_threshold,
+                        custom_fees=custom_fees,
+                        price_with_vat=competitor_price,
+                    )
 
                 st.markdown("### مقارنة سعرنا مع المنافس (تفصيل كامل مثل ورقة الحساب)")
                 col_cmp1, col_cmp2, col_cmp3 = st.columns(3)
