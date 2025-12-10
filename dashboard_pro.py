@@ -210,53 +210,67 @@ def load_all_data():
 try:
     materials, product_recipes, products_summary, package_compositions, packages_summary = load_all_data()
 except Exception as e:
-    st.error(f"❌ خطأ في تحميل البيانات: {e}")
-    st.info("""
-    📝 **ملفات البيانات المطلوبة في مجلد `data`:**
-    - `raw_materials_template.csv` (المواد الخام)
-    - `products_template.csv` (المنتجات)
-    - `packages_template.csv` (البكجات)
+    # رسالة ترحيبية بدلاً من رسالة خطأ
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                padding: 30px; border-radius: 15px; text-align: center; color: white; margin: 20px 0;">
+        <h1 style="margin: 0; font-size: 2.5em;">🎯 مرحباً بك في محرك تسعير صفوة</h1>
+        <p style="font-size: 1.2em; margin: 15px 0 0 0;">لنبدأ بإعداد البيانات الأساسية</p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    💡 **كيفية الحل:**
-    1. انتقل إلى صفحة "رفع الملفات" من القائمة الجانبية
-    2. قم برفع الملفات المطلوبة
-    3. أو قم بإنشاء ملفات جديدة فارغة
+    st.info("""
+    ### 📋 **ملفات البيانات المطلوبة في مجلد `data`:**
+    
+    1. **`raw_materials_template.csv`** - المواد الخام
+    2. **`products_template.csv`** - المنتجات  
+    3. **`packages_template.csv`** - البكجات
+    
+    ---
+    
+    ### 💡 **لديك خياران:**
+    
+    **الخيار 1:** اضغط على الزر بالأسفل لإنشاء ملفات فارغة، ثم ارفع بياناتك من صفحة "رفع الملفات"
+    
+    **الخيار 2:** انتقل مباشرة إلى صفحة "رفع الملفات" من القائمة الجانبية وارفع ملفاتك
     """)
     
-    # محاولة إنشاء ملفات فارغة كحل مؤقت
-    import os
-    os.makedirs("data", exist_ok=True)
-    
-    if st.button("🔧 إنشاء ملفات بيانات فارغة"):
-        import pandas as pd
-        
-        # إنشاء ملف المواد الخام
-        pd.DataFrame({
-            'Material_Name': [],
-            'Material_SKU': [],
-            'Category': [],
-            'Purchase_UoM': [],
-            'Cost_Price': []
-        }).to_csv('data/raw_materials_template.csv', index=False)
-        
-        # إنشاء ملف المنتجات
-        pd.DataFrame({
-            'Product_Name': [],
-            'Product_SKU': [],
-            'Material_SKU': [],
-            'Quantity': []
-        }).to_csv('data/products_template.csv', index=False)
-        
-        # إنشاء ملف البكجات
-        pd.DataFrame({
-            'Package_Name': [],
-            'Package_SKU': [],
-            'Item_SKU': [],
-            'Quantity': []
-        }).to_csv('data/packages_template.csv', index=False)
-        
-        st.success("✅ تم إنشاء الملفات الفارغة! يرجى إعادة تحميل الصفحة.")
-        st.rerun()
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🔧 إنشاء ملفات بيانات فارغة", type="primary", use_container_width=True):
+            import pandas as pd
+            import os
+            
+            os.makedirs("data", exist_ok=True)
+            
+            # إنشاء ملف المواد الخام
+            pd.DataFrame({
+                'Material_Name': ['مثال - قهوة عربية'],
+                'Material_SKU': ['MAT001'],
+                'Category': ['مواد أولية'],
+                'Purchase_UoM': ['كجم'],
+                'Cost_Price': [50.0]
+            }).to_csv('data/raw_materials_template.csv', index=False)
+            
+            # إنشاء ملف المنتجات
+            pd.DataFrame({
+                'Product_Name': ['مثال - منتج تجريبي'],
+                'Product_SKU': ['PROD001'],
+                'Material_SKU': ['MAT001'],
+                'Quantity': [0.5]
+            }).to_csv('data/products_template.csv', index=False)
+            
+            # إنشاء ملف البكجات
+            pd.DataFrame({
+                'Package_Name': ['مثال - باقة تجريبية'],
+                'Package_SKU': ['PKG001'],
+                'Item_SKU': ['PROD001'],
+                'Quantity': [2]
+            }).to_csv('data/packages_template.csv', index=False)
+            
+            st.success("✅ تم إنشاء الملفات مع بيانات تجريبية! يرجى إعادة تحميل الصفحة.")
+            st.balloons()
+            st.rerun()
     
     st.stop()
 
