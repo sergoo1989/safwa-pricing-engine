@@ -1628,8 +1628,9 @@ elif st.session_state.page == "pricing":
     if not channels:
         st.error("⚠️ لا توجد قنوات محفوظة! يجب إضافة قناة أولاً من صفحة الإعدادات")
     else:
-        # Load all data to get products and packages
-        materials, product_recipes, products_df, package_compositions, packages_df = load_cost_data("data")
+        # Use already loaded data (from load_all_data at the top)
+        products_df = products_summary
+        packages_df = packages_summary
 
         UIComponents.render_section_header(
             "تسعير احترافي لمنتج/بكج واحد",
