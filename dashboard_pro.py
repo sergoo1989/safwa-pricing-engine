@@ -1827,6 +1827,7 @@ elif st.session_state.page == "pricing":
                 "opex_pct": ch.opex_pct,
                 "marketing_pct": marketing_effective,
                 "platform_pct": ch.platform_pct,
+                "payment_pct": ch.payment_pct,
                 "vat_rate": vat_rate,
                 "discount_rate": discount_rate,
             }
@@ -1835,6 +1836,7 @@ elif st.session_state.page == "pricing":
                 channel_dict["opex_pct"]
                 + channel_dict["marketing_pct"]
                 + channel_dict["platform_pct"]
+                + channel_dict["payment_pct"]
             )
             
             # حساب السعر المباشر من المعادلة لتحقيق الهامش المستهدف
@@ -2098,17 +2100,17 @@ elif st.session_state.page == "pricing":
 
                 # عرض شروط المنصة المختارة
                 st.info(f"📋 **شروط المنصة المختارة ({selected_channel}):**\n"
-                       f"- حد الشحن المجاني: {free_threshold} ريال\n"
-                       f"- رسوم الشحن: {shipping} ريال\n"
-                       f"- رسوم التحضير: {preparation} ريال\n"
-                       f"- القاعدة: إذا السعر > {free_threshold} → شحن مدفوع | إذا ≤ {free_threshold} → شحن مجاني")
+                      f"- حد الشحن المجاني: {free_threshold} ريال\n"
+                      f"- رسوم الشحن: {shipping} ريال\n"
+                      f"- رسوم التحضير: {preparation} ريال\n"
+                      f"- القاعدة: إذا السعر < {free_threshold} → شحن مجاني | إذا ≥ {free_threshold} → شحن مدفوع")
                 
                 # عرض قرار الشحن لسعرنا
                 our_list_price = price_list_before_discount
-                if free_threshold > 0 and our_list_price <= free_threshold:
-                    st.success(f"✅ السعر بدون رسوم ({our_list_price:.2f}) ≤ الحد ({free_threshold}) → شحن مجاني (0), تحضير مجاني (0)")
+                if free_threshold > 0 and our_list_price < free_threshold:
+                    st.success(f"✅ السعر قبل الخصم ({our_list_price:.2f}) < الحد ({free_threshold}) → شحن مجاني (0), تحضير مجاني (0)")
                 elif free_threshold > 0:
-                    st.success(f"✅ السعر بدون رسوم ({our_list_price:.2f}) > الحد ({free_threshold}) → شحن مدفوع ({shipping}), تحضير مدفوع ({preparation})")
+                    st.success(f"✅ السعر قبل الخصم ({our_list_price:.2f}) ≥ الحد ({free_threshold}) → شحن مدفوع ({shipping}), تحضير مدفوع ({preparation})")
                 else:
                     st.success(f"✅ لا يوجد حد للشحن المجاني → شحن مدفوع ({shipping}), تحضير مدفوع ({preparation})")
 
@@ -2662,12 +2664,13 @@ elif st.session_state.page == "custom_package":
                        f"- حد الشحن المجاني: {free_threshold} ريال\n"
                        f"- رسوم الشحن: {shipping} ريال\n"
                        f"- رسوم التحضير: {preparation} ريال\n"
-                       f"- القاعدة: إذا السعر > {free_threshold} → شحن مدفوع | إذا ≤ {free_threshold} → شحن مجاني")
+                      f"- القاعدة: إذا السعر < {free_threshold} → شحن مجاني | إذا ≥ {free_threshold} → شحن مدفوع")
 
                 channel_dict = {
                     "opex_pct": ch.opex_pct,
                     "marketing_pct": ch.marketing_pct + (marketing_boost / 100),
                     "platform_pct": ch.platform_pct,
+                    "payment_pct": ch.payment_pct,
                     "vat_rate": vat_rate,
                     "discount_rate": discount_pct,
                 }
@@ -2686,8 +2689,9 @@ elif st.session_state.page == "custom_package":
                 admin_pct = channel_dict["opex_pct"]
                 marketing_pct = channel_dict["marketing_pct"]
                 platform_pct = channel_dict["platform_pct"]
+                payment_pct = channel_dict.get("payment_pct", 0.0)
                 
-                total_pct = admin_pct + marketing_pct + platform_pct + custom_pct
+                total_pct = admin_pct + marketing_pct + platform_pct + payment_pct + custom_pct
                 denom = 1 - total_pct - target_margin
 
                 if denom <= 0 or (1 - discount_pct) <= 0:
@@ -2707,10 +2711,10 @@ elif st.session_state.page == "custom_package":
                 list_price_with_fees = price_after_vat_with_fees / (1 - discount_pct)
                 
                 # قرار: هل الشحن مجاني أم مدفوع؟
-                # إذا السعر بدون رسوم ≤ الحد → استخدم السعر بدون رسوم (شحن مجاني)
-                # إذا السعر بدون رسوم > الحد → استخدم السعر مع رسوم (شحن مدفوع)
-                if free_threshold > 0 and list_price_without_fees <= free_threshold:
-                    # الشحن مجاني لأن السعر ≤ الحد
+                # إذا السعر بدون رسوم < الحد → استخدم السعر بدون رسوم (شحن مجاني)
+                # إذا السعر بدون رسوم ≥ الحد → استخدم السعر مع رسوم (شحن مدفوع)
+                if free_threshold > 0 and list_price_without_fees < free_threshold:
+                    # الشحن مجاني لأن السعر أقل من الحد
                     actual_shipping = 0
                     actual_preparation = 0
                     fixed_costs = fixed_costs_without_fees
