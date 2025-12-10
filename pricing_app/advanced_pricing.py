@@ -118,18 +118,40 @@ def calculate_price_breakdown(
         # D = السعر الصافي بدون ضريبة بعد الخصم
         net_price_excl_vat_and_discount = price_after_discount / (1 + vat_rate)
     else:
-        # الطريقة القديمة: حساب السعر من COGS
-        target_margin = 0.09  # هامش افتراضي 9%
+        # حساب السعر الذكي: نجرب تحقيق هامش 10% تحت حد 98 أولاً
+        target_margin = 0.10  # هامش مستهدف 10%
         total_fees_pct = admin_pct + marketing_pct + platform_pct
-        net_price_excl_vat_and_discount = cogs / (1 - total_fees_pct - target_margin)
         
-        # السعر مع الضريبة = D * (1 + VAT)
-        price_with_vat_calc = net_price_excl_vat_and_discount * (1 + vat_rate)
+        # نجرب: هل يمكن تحقيق الهامش بدون شحن/تحضير؟
+        def calc_price_for_margin(margin: float, include_shipping: bool) -> float:
+            """حساب السعر المطلوب لتحقيق هامش معين"""
+            fixed_costs = cogs
+            if include_shipping:
+                fixed_costs += shipping + preparation
+            
+            denom = 1 - total_fees_pct - margin
+            if denom <= 0:
+                return 0
+            
+            net_required = fixed_costs / denom
+            price_with_vat_calc = net_required * (1 + vat_rate)
+            return price_with_vat_calc / (1 - discount_rate)
         
-        # السعر قبل الخصم = price_with_vat / (1 - discount)
-        price_before_discount = price_with_vat_calc / (1 - discount_rate)
+        # نجرب السعر بدون شحن/تحضير
+        price_without_shipping = calc_price_for_margin(target_margin, False)
+        
+        # إذا السعر بدون شحن < 98 → نستخدمه (شحن مجاني!)
+        if free_shipping_threshold > 0 and price_without_shipping > 0 and price_without_shipping < free_shipping_threshold:
+            price_before_discount = price_without_shipping
+            net_price_excl_vat_and_discount = cogs / (1 - total_fees_pct - target_margin)
+        else:
+            # السعر >= 98 أو غير قابل للتحقيق → نضيف الشحن والتحضير
+            price_with_shipping = calc_price_for_margin(target_margin, True)
+            price_before_discount = price_with_shipping if price_with_shipping > 0 else price_without_shipping
+            net_price_excl_vat_and_discount = (cogs + shipping + preparation) / (1 - total_fees_pct - target_margin)
+        
         discount_amount = price_before_discount * discount_rate
-        price_after_discount = price_with_vat_calc
+        price_after_discount = price_before_discount - discount_amount
     
     # حساب الرسوم على السعر الصافي (D) أولاً
     admin_fee = net_price_excl_vat_and_discount * admin_pct      # H = D × نسبة
