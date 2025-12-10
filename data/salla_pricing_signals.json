@@ -1,0 +1,1380 @@
+{
+  "risk_table": [
+    {
+      "sku_code": "0.5HM3H",
+      "delivered": 14225,
+      "canceled": 138,
+      "returned": 234,
+      "total_orders": 14597,
+      "risk_pct": 0.025484688634650955,
+      "risk_surcharge": 0.012742344317325478,
+      "risk_multiplier": 1.0127423443173256
+    },
+    {
+      "sku_code": "0.5TM3T",
+      "delivered": 56094,
+      "canceled": 560,
+      "returned": 925,
+      "total_orders": 57579,
+      "risk_pct": 0.025790652842182047,
+      "risk_surcharge": 0.012895326421091024,
+      "risk_multiplier": 1.012895326421091
+    },
+    {
+      "sku_code": "1LM1250",
+      "delivered": 3476,
+      "canceled": 148,
+      "returned": 7,
+      "total_orders": 3631,
+      "risk_pct": 0.04268796474800331,
+      "risk_surcharge": 0.021343982374001653,
+      "risk_multiplier": 1.0213439823740016
+    },
+    {
+      "sku_code": "1LM6M",
+      "delivered": 5617,
+      "canceled": 176,
+      "returned": 133,
+      "total_orders": 5926,
+      "risk_pct": 0.05214309821127236,
+      "risk_surcharge": 0.02607154910563618,
+      "risk_multiplier": 1.0260715491056362
+    },
+    {
+      "sku_code": "1LM7M",
+      "delivered": 4832,
+      "canceled": 57,
+      "returned": 327,
+      "total_orders": 5216,
+      "risk_pct": 0.0736196319018405,
+      "risk_surcharge": 0.03680981595092025,
+      "risk_multiplier": 1.0368098159509203
+    },
+    {
+      "sku_code": "2LM1000",
+      "delivered": 2074,
+      "canceled": 63,
+      "returned": 6,
+      "total_orders": 2143,
+      "risk_pct": 0.032197853476434904,
+      "risk_surcharge": 0.016098926738217452,
+      "risk_multiplier": 1.0160989267382174
+    },
+    {
+      "sku_code": "2LM3M",
+      "delivered": 82648,
+      "canceled": 1002,
+      "returned": 1460,
+      "total_orders": 85110,
+      "risk_pct": 0.028927270590999882,
+      "risk_surcharge": 0.014463635295499941,
+      "risk_multiplier": 1.0144636352954999
+    },
+    {
+      "sku_code": "2LM4",
+      "delivered": 2469,
+      "canceled": 22,
+      "returned": 81,
+      "total_orders": 2572,
+      "risk_pct": 0.04004665629860031,
+      "risk_surcharge": 0.020023328149300156,
+      "risk_multiplier": 1.0200233281493
+    },
+    {
+      "sku_code": "4LM2000",
+      "delivered": 1275,
+      "canceled": 41,
+      "returned": 4,
+      "total_orders": 1320,
+      "risk_pct": 0.03409090909090909,
+      "risk_surcharge": 0.017045454545454544,
+      "risk_multiplier": 1.0170454545454546
+    },
+    {
+      "sku_code": "4LM3M",
+      "delivered": 32940,
+      "canceled": 599,
+      "returned": 500,
+      "total_orders": 34039,
+      "risk_pct": 0.03228649490290549,
+      "risk_surcharge": 0.016143247451452746,
+      "risk_multiplier": 1.0161432474514527
+    },
+    {
+      "sku_code": "6285768000767",
+      "delivered": 1047,
+      "canceled": 1,
+      "returned": 13,
+      "total_orders": 1061,
+      "risk_pct": 0.013195098963242224,
+      "risk_surcharge": 0.006597549481621112,
+      "risk_multiplier": 1.006597549481621
+    },
+    {
+      "sku_code": "ACHIL",
+      "delivered": 1585,
+      "canceled": 71,
+      "returned": 0,
+      "total_orders": 1656,
+      "risk_pct": 0.042874396135265704,
+      "risk_surcharge": 0.021437198067632852,
+      "risk_multiplier": 1.021437198067633
+    },
+    {
+      "sku_code": "ALLCHBOX",
+      "delivered": 503,
+      "canceled": 33,
+      "returned": 13,
+      "total_orders": 549,
+      "risk_pct": 0.08378870673952642,
+      "risk_surcharge": 0.04189435336976321,
+      "risk_multiplier": 1.041894353369763
+    },
+    {
+      "sku_code": "BARAKAH46",
+      "delivered": 351,
+      "canceled": 2,
+      "returned": 3,
+      "total_orders": 356,
+      "risk_pct": 0.014044943820224719,
+      "risk_surcharge": 0.007022471910112359,
+      "risk_multiplier": 1.0070224719101124
+    },
+    {
+      "sku_code": "BCHIL",
+      "delivered": 1225,
+      "canceled": 60,
+      "returned": 0,
+      "total_orders": 1285,
+      "risk_pct": 0.04669260700389105,
+      "risk_surcharge": 0.023346303501945526,
+      "risk_multiplier": 1.0233463035019454
+    },
+    {
+      "sku_code": "BIG_KHAYRAT",
+      "delivered": 5172,
+      "canceled": 27,
+      "returned": 108,
+      "total_orders": 5307,
+      "risk_pct": 0.025438100621820236,
+      "risk_surcharge": 0.012719050310910118,
+      "risk_multiplier": 1.01271905031091
+    },
+    {
+      "sku_code": "BP450MM",
+      "delivered": 6114,
+      "canceled": 243,
+      "returned": 144,
+      "total_orders": 6501,
+      "risk_pct": 0.05952930318412552,
+      "risk_surcharge": 0.02976465159206276,
+      "risk_multiplier": 1.0297646515920627
+    },
+    {
+      "sku_code": "BP550",
+      "delivered": 2424,
+      "canceled": 55,
+      "returned": 59,
+      "total_orders": 2538,
+      "risk_pct": 0.04491725768321513,
+      "risk_surcharge": 0.022458628841607566,
+      "risk_multiplier": 1.0224586288416075
+    },
+    {
+      "sku_code": "BXH6600",
+      "delivered": 2143,
+      "canceled": 22,
+      "returned": 147,
+      "total_orders": 2312,
+      "risk_pct": 0.07309688581314878,
+      "risk_surcharge": 0.03654844290657439,
+      "risk_multiplier": 1.0365484429065743
+    },
+    {
+      "sku_code": "BXTH5100",
+      "delivered": 22678,
+      "canceled": 922,
+      "returned": 215,
+      "total_orders": 23815,
+      "risk_pct": 0.04774301910560571,
+      "risk_surcharge": 0.023871509552802855,
+      "risk_multiplier": 1.0238715095528028
+    },
+    {
+      "sku_code": "BXTH51003",
+      "delivered": 12398,
+      "canceled": 56,
+      "returned": 253,
+      "total_orders": 12707,
+      "risk_pct": 0.02431730542220823,
+      "risk_surcharge": 0.012158652711104116,
+      "risk_multiplier": 1.0121586527111042
+    },
+    {
+      "sku_code": "BXTH510033",
+      "delivered": 16496,
+      "canceled": 116,
+      "returned": 480,
+      "total_orders": 17092,
+      "risk_pct": 0.034870114673531474,
+      "risk_surcharge": 0.017435057336765737,
+      "risk_multiplier": 1.0174350573367656
+    },
+    {
+      "sku_code": "CCHIL",
+      "delivered": 739,
+      "canceled": 34,
+      "returned": 0,
+      "total_orders": 773,
+      "risk_pct": 0.04398447606727038,
+      "risk_surcharge": 0.02199223803363519,
+      "risk_multiplier": 1.0219922380336353
+    },
+    {
+      "sku_code": "COSH-A-PKG",
+      "delivered": 741,
+      "canceled": 0,
+      "returned": 13,
+      "total_orders": 754,
+      "risk_pct": 0.017241379310344827,
+      "risk_surcharge": 0.008620689655172414,
+      "risk_multiplier": 1.0086206896551724
+    },
+    {
+      "sku_code": "COSH-B-PKG",
+      "delivered": 1979,
+      "canceled": 0,
+      "returned": 44,
+      "total_orders": 2023,
+      "risk_pct": 0.021749876421156698,
+      "risk_surcharge": 0.010874938210578349,
+      "risk_multiplier": 1.0108749382105784
+    },
+    {
+      "sku_code": "CRACK4",
+      "delivered": 29840,
+      "canceled": 200,
+      "returned": 1231,
+      "total_orders": 31271,
+      "risk_pct": 0.04576124844104762,
+      "risk_surcharge": 0.02288062422052381,
+      "risk_multiplier": 1.0228806242205237
+    },
+    {
+      "sku_code": "CRACKC1",
+      "delivered": 1557,
+      "canceled": 10,
+      "returned": 62,
+      "total_orders": 1629,
+      "risk_pct": 0.04419889502762431,
+      "risk_surcharge": 0.022099447513812154,
+      "risk_multiplier": 1.022099447513812
+    },
+    {
+      "sku_code": "CRACKH1",
+      "delivered": 606,
+      "canceled": 5,
+      "returned": 21,
+      "total_orders": 632,
+      "risk_pct": 0.04113924050632911,
+      "risk_surcharge": 0.020569620253164556,
+      "risk_multiplier": 1.0205696202531644
+    },
+    {
+      "sku_code": "CRACKS1",
+      "delivered": 1026,
+      "canceled": 8,
+      "returned": 28,
+      "total_orders": 1062,
+      "risk_pct": 0.03389830508474576,
+      "risk_surcharge": 0.01694915254237288,
+      "risk_multiplier": 1.0169491525423728
+    },
+    {
+      "sku_code": "CRACKZ1",
+      "delivered": 2318,
+      "canceled": 22,
+      "returned": 66,
+      "total_orders": 2406,
+      "risk_pct": 0.03657522859517872,
+      "risk_surcharge": 0.01828761429758936,
+      "risk_multiplier": 1.0182876142975894
+    },
+    {
+      "sku_code": "CRISPYSAF-PACK3",
+      "delivered": 220,
+      "canceled": 0,
+      "returned": 2,
+      "total_orders": 222,
+      "risk_pct": 0.009009009009009009,
+      "risk_surcharge": 0.0045045045045045045,
+      "risk_multiplier": 1.0045045045045045
+    },
+    {
+      "sku_code": "CRISPYSAF-PACK5",
+      "delivered": 147,
+      "canceled": 0,
+      "returned": 3,
+      "total_orders": 150,
+      "risk_pct": 0.02,
+      "risk_surcharge": 0.01,
+      "risk_multiplier": 1.01
+    },
+    {
+      "sku_code": "CRISPYSAF-PACK6",
+      "delivered": 2327,
+      "canceled": 0,
+      "returned": 46,
+      "total_orders": 2373,
+      "risk_pct": 0.01938474504846186,
+      "risk_surcharge": 0.00969237252423093,
+      "risk_multiplier": 1.0096923725242308
+    },
+    {
+      "sku_code": "CRISPYSAF0",
+      "delivered": 668,
+      "canceled": 4,
+      "returned": 25,
+      "total_orders": 697,
+      "risk_pct": 0.04160688665710186,
+      "risk_surcharge": 0.02080344332855093,
+      "risk_multiplier": 1.0208034433285509
+    },
+    {
+      "sku_code": "CRISPYSAF1",
+      "delivered": 499,
+      "canceled": 1,
+      "returned": 26,
+      "total_orders": 526,
+      "risk_pct": 0.051330798479087454,
+      "risk_surcharge": 0.025665399239543727,
+      "risk_multiplier": 1.0256653992395437
+    },
+    {
+      "sku_code": "CRISPYSAF10",
+      "delivered": 753,
+      "canceled": 7,
+      "returned": 30,
+      "total_orders": 790,
+      "risk_pct": 0.04683544303797468,
+      "risk_surcharge": 0.02341772151898734,
+      "risk_multiplier": 1.0234177215189872
+    },
+    {
+      "sku_code": "CRISPYSAF11",
+      "delivered": 710,
+      "canceled": 3,
+      "returned": 27,
+      "total_orders": 740,
+      "risk_pct": 0.04054054054054054,
+      "risk_surcharge": 0.02027027027027027,
+      "risk_multiplier": 1.0202702702702702
+    },
+    {
+      "sku_code": "CRISPYSAF12",
+      "delivered": 3619,
+      "canceled": 44,
+      "returned": 127,
+      "total_orders": 3790,
+      "risk_pct": 0.04511873350923483,
+      "risk_surcharge": 0.022559366754617415,
+      "risk_multiplier": 1.0225593667546173
+    },
+    {
+      "sku_code": "CRISPYSAF2",
+      "delivered": 223,
+      "canceled": 1,
+      "returned": 18,
+      "total_orders": 242,
+      "risk_pct": 0.07851239669421488,
+      "risk_surcharge": 0.03925619834710744,
+      "risk_multiplier": 1.0392561983471074
+    },
+    {
+      "sku_code": "CRISPYSAF3",
+      "delivered": 573,
+      "canceled": 3,
+      "returned": 19,
+      "total_orders": 595,
+      "risk_pct": 0.03697478991596639,
+      "risk_surcharge": 0.018487394957983194,
+      "risk_multiplier": 1.0184873949579831
+    },
+    {
+      "sku_code": "CRISPYSAF4",
+      "delivered": 997,
+      "canceled": 6,
+      "returned": 32,
+      "total_orders": 1035,
+      "risk_pct": 0.03671497584541063,
+      "risk_surcharge": 0.018357487922705314,
+      "risk_multiplier": 1.0183574879227053
+    },
+    {
+      "sku_code": "CRISPYSAF5",
+      "delivered": 296,
+      "canceled": 1,
+      "returned": 20,
+      "total_orders": 317,
+      "risk_pct": 0.06624605678233439,
+      "risk_surcharge": 0.033123028391167195,
+      "risk_multiplier": 1.0331230283911672
+    },
+    {
+      "sku_code": "CRISPYSAF6",
+      "delivered": 244,
+      "canceled": 3,
+      "returned": 14,
+      "total_orders": 261,
+      "risk_pct": 0.06513409961685823,
+      "risk_surcharge": 0.032567049808429116,
+      "risk_multiplier": 1.0325670498084292
+    },
+    {
+      "sku_code": "CRISPYSAF7",
+      "delivered": 396,
+      "canceled": 2,
+      "returned": 12,
+      "total_orders": 410,
+      "risk_pct": 0.03414634146341464,
+      "risk_surcharge": 0.01707317073170732,
+      "risk_multiplier": 1.0170731707317073
+    },
+    {
+      "sku_code": "CRISPYSAF8",
+      "delivered": 207,
+      "canceled": 0,
+      "returned": 7,
+      "total_orders": 214,
+      "risk_pct": 0.03271028037383177,
+      "risk_surcharge": 0.016355140186915886,
+      "risk_multiplier": 1.016355140186916
+    },
+    {
+      "sku_code": "CRISPYSAF9",
+      "delivered": 529,
+      "canceled": 3,
+      "returned": 26,
+      "total_orders": 558,
+      "risk_pct": 0.05197132616487455,
+      "risk_surcharge": 0.025985663082437275,
+      "risk_multiplier": 1.0259856630824373
+    },
+    {
+      "sku_code": "DCHIL",
+      "delivered": 2174,
+      "canceled": 102,
+      "returned": 0,
+      "total_orders": 2276,
+      "risk_pct": 0.04481546572934974,
+      "risk_surcharge": 0.02240773286467487,
+      "risk_multiplier": 1.0224077328646748
+    },
+    {
+      "sku_code": "DL100",
+      "delivered": 265,
+      "canceled": 15,
+      "returned": 4,
+      "total_orders": 284,
+      "risk_pct": 0.06690140845070422,
+      "risk_surcharge": 0.03345070422535211,
+      "risk_multiplier": 1.033450704225352
+    },
+    {
+      "sku_code": "Dwarehouse",
+      "delivered": 132,
+      "canceled": 13,
+      "returned": 5,
+      "total_orders": 150,
+      "risk_pct": 0.12,
+      "risk_surcharge": 0.06,
+      "risk_multiplier": 1.06
+    },
+    {
+      "sku_code": "ECHIL",
+      "delivered": 1343,
+      "canceled": 72,
+      "returned": 0,
+      "total_orders": 1415,
+      "risk_pct": 0.05088339222614841,
+      "risk_surcharge": 0.025441696113074206,
+      "risk_multiplier": 1.0254416961130741
+    },
+    {
+      "sku_code": "EID-BREAKFAST-PACK-01",
+      "delivered": 2579,
+      "canceled": 1,
+      "returned": 125,
+      "total_orders": 2705,
+      "risk_pct": 0.046580406654343806,
+      "risk_surcharge": 0.023290203327171903,
+      "risk_multiplier": 1.0232902033271718
+    },
+    {
+      "sku_code": "ESTABLISH297",
+      "delivered": 5495,
+      "canceled": 260,
+      "returned": 399,
+      "total_orders": 6154,
+      "risk_pct": 0.10708482287942801,
+      "risk_surcharge": 0.053542411439714006,
+      "risk_multiplier": 1.053542411439714
+    },
+    {
+      "sku_code": "Eidbreakfast",
+      "delivered": 1169,
+      "canceled": 32,
+      "returned": 171,
+      "total_orders": 1372,
+      "risk_pct": 0.14795918367346939,
+      "risk_surcharge": 0.07397959183673469,
+      "risk_multiplier": 1.0739795918367347
+    },
+    {
+      "sku_code": "FAMILY",
+      "delivered": 619,
+      "canceled": 6,
+      "returned": 20,
+      "total_orders": 645,
+      "risk_pct": 0.040310077519379844,
+      "risk_surcharge": 0.020155038759689922,
+      "risk_multiplier": 1.0201550387596898
+    },
+    {
+      "sku_code": "FCHIL",
+      "delivered": 2339,
+      "canceled": 89,
+      "returned": 0,
+      "total_orders": 2428,
+      "risk_pct": 0.036655683690280064,
+      "risk_surcharge": 0.018327841845140032,
+      "risk_multiplier": 1.01832784184514
+    },
+    {
+      "sku_code": "FSales",
+      "delivered": 27,
+      "canceled": 7,
+      "returned": 1,
+      "total_orders": 35,
+      "risk_pct": 0.22857142857142856,
+      "risk_surcharge": 0.11428571428571428,
+      "risk_multiplier": 1.1142857142857143
+    },
+    {
+      "sku_code": "GRN-PN-CH-003",
+      "delivered": 6440,
+      "canceled": 0,
+      "returned": 110,
+      "total_orders": 6550,
+      "risk_pct": 0.016793893129770993,
+      "risk_surcharge": 0.008396946564885497,
+      "risk_multiplier": 1.0083969465648854
+    },
+    {
+      "sku_code": "GRN-TM-HL-002",
+      "delivered": 3711,
+      "canceled": 0,
+      "returned": 66,
+      "total_orders": 3777,
+      "risk_pct": 0.017474185861795076,
+      "risk_surcharge": 0.008737092930897538,
+      "risk_multiplier": 1.0087370929308976
+    },
+    {
+      "sku_code": "GRN-TST-004",
+      "delivered": 5152,
+      "canceled": 2,
+      "returned": 74,
+      "total_orders": 5228,
+      "risk_pct": 0.014537107880642693,
+      "risk_surcharge": 0.0072685539403213465,
+      "risk_multiplier": 1.0072685539403214
+    },
+    {
+      "sku_code": "GRN-ZA-001",
+      "delivered": 1918,
+      "canceled": 0,
+      "returned": 37,
+      "total_orders": 1955,
+      "risk_pct": 0.018925831202046037,
+      "risk_surcharge": 0.009462915601023018,
+      "risk_multiplier": 1.009462915601023
+    },
+    {
+      "sku_code": "HALLOMCHBOX",
+      "delivered": 301,
+      "canceled": 30,
+      "returned": 11,
+      "total_orders": 342,
+      "risk_pct": 0.11988304093567251,
+      "risk_surcharge": 0.059941520467836254,
+      "risk_multiplier": 1.0599415204678362
+    },
+    {
+      "sku_code": "HONY1000M",
+      "delivered": 1476,
+      "canceled": 44,
+      "returned": 47,
+      "total_orders": 1567,
+      "risk_pct": 0.05807275047862157,
+      "risk_surcharge": 0.029036375239310786,
+      "risk_multiplier": 1.0290363752393108
+    },
+    {
+      "sku_code": "HONY250M",
+      "delivered": 4319,
+      "canceled": 99,
+      "returned": 203,
+      "total_orders": 4621,
+      "risk_pct": 0.06535381951958451,
+      "risk_surcharge": 0.032676909759792254,
+      "risk_multiplier": 1.0326769097597923
+    },
+    {
+      "sku_code": "HONY500M",
+      "delivered": 4137,
+      "canceled": 87,
+      "returned": 156,
+      "total_orders": 4380,
+      "risk_pct": 0.05547945205479452,
+      "risk_surcharge": 0.02773972602739726,
+      "risk_multiplier": 1.0277397260273973
+    },
+    {
+      "sku_code": "LUNCHBOX",
+      "delivered": 647,
+      "canceled": 10,
+      "returned": 74,
+      "total_orders": 731,
+      "risk_pct": 0.11491108071135431,
+      "risk_surcharge": 0.057455540355677154,
+      "risk_multiplier": 1.0574555403556771
+    },
+    {
+      "sku_code": "MF-PK-MX",
+      "delivered": 654,
+      "canceled": 0,
+      "returned": 11,
+      "total_orders": 665,
+      "risk_pct": 0.016541353383458645,
+      "risk_surcharge": 0.008270676691729323,
+      "risk_multiplier": 1.0082706766917293
+    },
+    {
+      "sku_code": "MORNING",
+      "delivered": 366,
+      "canceled": 8,
+      "returned": 27,
+      "total_orders": 401,
+      "risk_pct": 0.08728179551122195,
+      "risk_surcharge": 0.043640897755610975,
+      "risk_multiplier": 1.043640897755611
+    },
+    {
+      "sku_code": "MQL-PK01",
+      "delivered": 15008,
+      "canceled": 14,
+      "returned": 342,
+      "total_orders": 15364,
+      "risk_pct": 0.023171049205935955,
+      "risk_surcharge": 0.011585524602967977,
+      "risk_multiplier": 1.011585524602968
+    },
+    {
+      "sku_code": "MQL-PK02",
+      "delivered": 591,
+      "canceled": 0,
+      "returned": 6,
+      "total_orders": 597,
+      "risk_pct": 0.010050251256281407,
+      "risk_surcharge": 0.005025125628140704,
+      "risk_multiplier": 1.0050251256281406
+    },
+    {
+      "sku_code": "NATIONALDAY93H",
+      "delivered": 16551,
+      "canceled": 535,
+      "returned": 377,
+      "total_orders": 17463,
+      "risk_pct": 0.052224703659165095,
+      "risk_surcharge": 0.026112351829582547,
+      "risk_multiplier": 1.0261123518295825
+    },
+    {
+      "sku_code": "NATIONALDAY93T",
+      "delivered": 50009,
+      "canceled": 1321,
+      "returned": 1666,
+      "total_orders": 52996,
+      "risk_pct": 0.05636274435806476,
+      "risk_surcharge": 0.02818137217903238,
+      "risk_multiplier": 1.0281813721790323
+    },
+    {
+      "sku_code": "NATIONALch93",
+      "delivered": 1381,
+      "canceled": 58,
+      "returned": 0,
+      "total_orders": 1439,
+      "risk_pct": 0.04030576789437109,
+      "risk_surcharge": 0.020152883947185545,
+      "risk_multiplier": 1.0201528839471856
+    },
+    {
+      "sku_code": "National500",
+      "delivered": 7258,
+      "canceled": 113,
+      "returned": 537,
+      "total_orders": 7908,
+      "risk_pct": 0.08219524532119372,
+      "risk_surcharge": 0.04109762266059686,
+      "risk_multiplier": 1.0410976226605968
+    },
+    {
+      "sku_code": "NationalDay_1",
+      "delivered": 657,
+      "canceled": 11,
+      "returned": 58,
+      "total_orders": 726,
+      "risk_pct": 0.09504132231404959,
+      "risk_surcharge": 0.047520661157024795,
+      "risk_multiplier": 1.0475206611570247
+    },
+    {
+      "sku_code": "NationalDay_10",
+      "delivered": 22109,
+      "canceled": 164,
+      "returned": 1159,
+      "total_orders": 23432,
+      "risk_pct": 0.05646124957323319,
+      "risk_surcharge": 0.028230624786616594,
+      "risk_multiplier": 1.0282306247866166
+    },
+    {
+      "sku_code": "NationalDay_2",
+      "delivered": 371,
+      "canceled": 3,
+      "returned": 18,
+      "total_orders": 392,
+      "risk_pct": 0.05357142857142857,
+      "risk_surcharge": 0.026785714285714284,
+      "risk_multiplier": 1.0267857142857142
+    },
+    {
+      "sku_code": "NationalDay_4",
+      "delivered": 21536,
+      "canceled": 100,
+      "returned": 541,
+      "total_orders": 22177,
+      "risk_pct": 0.028903819272218967,
+      "risk_surcharge": 0.014451909636109483,
+      "risk_multiplier": 1.0144519096361095
+    },
+    {
+      "sku_code": "NationalDay_5",
+      "delivered": 614,
+      "canceled": 11,
+      "returned": 28,
+      "total_orders": 653,
+      "risk_pct": 0.05972434915773354,
+      "risk_surcharge": 0.02986217457886677,
+      "risk_multiplier": 1.0298621745788668
+    },
+    {
+      "sku_code": "NationalDay_6",
+      "delivered": 12732,
+      "canceled": 46,
+      "returned": 576,
+      "total_orders": 13354,
+      "risk_pct": 0.04657780440317508,
+      "risk_surcharge": 0.02328890220158754,
+      "risk_multiplier": 1.0232889022015876
+    },
+    {
+      "sku_code": "NationalDay_7",
+      "delivered": 775,
+      "canceled": 7,
+      "returned": 40,
+      "total_orders": 822,
+      "risk_pct": 0.057177615571776155,
+      "risk_surcharge": 0.028588807785888078,
+      "risk_multiplier": 1.028588807785888
+    },
+    {
+      "sku_code": "NationalDay_8",
+      "delivered": 1500,
+      "canceled": 12,
+      "returned": 57,
+      "total_orders": 1569,
+      "risk_pct": 0.04397705544933078,
+      "risk_surcharge": 0.02198852772466539,
+      "risk_multiplier": 1.0219885277246654
+    },
+    {
+      "sku_code": "NationalDay_9",
+      "delivered": 542,
+      "canceled": 4,
+      "returned": 11,
+      "total_orders": 557,
+      "risk_pct": 0.026929982046678635,
+      "risk_surcharge": 0.013464991023339317,
+      "risk_multiplier": 1.0134649910233393
+    },
+    {
+      "sku_code": "OILSPRAY",
+      "delivered": 463,
+      "canceled": 4,
+      "returned": 3,
+      "total_orders": 470,
+      "risk_pct": 0.014893617021276596,
+      "risk_surcharge": 0.007446808510638298,
+      "risk_multiplier": 1.0074468085106383
+    },
+    {
+      "sku_code": "OLIVCHBOX",
+      "delivered": 260,
+      "canceled": 34,
+      "returned": 7,
+      "total_orders": 301,
+      "risk_pct": 0.1362126245847176,
+      "risk_surcharge": 0.0681063122923588,
+      "risk_multiplier": 1.0681063122923589
+    },
+    {
+      "sku_code": "OLIVEOIL1L12PCS",
+      "delivered": 18385,
+      "canceled": 163,
+      "returned": 389,
+      "total_orders": 18937,
+      "risk_pct": 0.029149284469556953,
+      "risk_surcharge": 0.014574642234778477,
+      "risk_multiplier": 1.0145746422347786
+    },
+    {
+      "sku_code": "OLIVEOILE1000M",
+      "delivered": 32010,
+      "canceled": 587,
+      "returned": 991,
+      "total_orders": 33588,
+      "risk_pct": 0.04698106466595212,
+      "risk_surcharge": 0.02349053233297606,
+      "risk_multiplier": 1.0234905323329762
+    },
+    {
+      "sku_code": "OLIVEOILE16000M",
+      "delivered": 47,
+      "canceled": 2,
+      "returned": 12,
+      "total_orders": 61,
+      "risk_pct": 0.22950819672131148,
+      "risk_surcharge": 0.11475409836065574,
+      "risk_multiplier": 1.1147540983606556
+    },
+    {
+      "sku_code": "OLIVEOILE2000M",
+      "delivered": 27892,
+      "canceled": 400,
+      "returned": 792,
+      "total_orders": 29084,
+      "risk_pct": 0.040984733874295146,
+      "risk_surcharge": 0.020492366937147573,
+      "risk_multiplier": 1.0204923669371475
+    },
+    {
+      "sku_code": "OLIVEOILE4000M",
+      "delivered": 20801,
+      "canceled": 325,
+      "returned": 527,
+      "total_orders": 21653,
+      "risk_pct": 0.03934789636539971,
+      "risk_surcharge": 0.019673948182699855,
+      "risk_multiplier": 1.0196739481827
+    },
+    {
+      "sku_code": "OLIVEOILE5000B",
+      "delivered": 33700,
+      "canceled": 336,
+      "returned": 499,
+      "total_orders": 34535,
+      "risk_pct": 0.024178369769798754,
+      "risk_surcharge": 0.012089184884899377,
+      "risk_multiplier": 1.0120891848848994
+    },
+    {
+      "sku_code": "OLIVEOILE5000BD",
+      "delivered": 72,
+      "canceled": 3,
+      "returned": 4,
+      "total_orders": 79,
+      "risk_pct": 0.08860759493670886,
+      "risk_surcharge": 0.04430379746835443,
+      "risk_multiplier": 1.0443037974683544
+    },
+    {
+      "sku_code": "OLIVEOILE5000MM",
+      "delivered": 160,
+      "canceled": 1,
+      "returned": 1,
+      "total_orders": 162,
+      "risk_pct": 0.012345679012345678,
+      "risk_surcharge": 0.006172839506172839,
+      "risk_multiplier": 1.0061728395061729
+    },
+    {
+      "sku_code": "OLVHNTH-HM12-GRN2",
+      "delivered": 1705,
+      "canceled": 0,
+      "returned": 85,
+      "total_orders": 1790,
+      "risk_pct": 0.04748603351955307,
+      "risk_surcharge": 0.023743016759776536,
+      "risk_multiplier": 1.0237430167597765
+    },
+    {
+      "sku_code": "RM46OT",
+      "delivered": 202,
+      "canceled": 2,
+      "returned": 16,
+      "total_orders": 220,
+      "risk_pct": 0.08181818181818182,
+      "risk_surcharge": 0.04090909090909091,
+      "risk_multiplier": 1.040909090909091
+    },
+    {
+      "sku_code": "RM46OTH",
+      "delivered": 144,
+      "canceled": 2,
+      "returned": 8,
+      "total_orders": 154,
+      "risk_pct": 0.06493506493506493,
+      "risk_surcharge": 0.032467532467532464,
+      "risk_multiplier": 1.0324675324675325
+    },
+    {
+      "sku_code": "RN1L21TH2",
+      "delivered": 14869,
+      "canceled": 136,
+      "returned": 1097,
+      "total_orders": 16102,
+      "risk_pct": 0.07657433859147932,
+      "risk_surcharge": 0.03828716929573966,
+      "risk_multiplier": 1.0382871692957396
+    },
+    {
+      "sku_code": "RNBP450",
+      "delivered": 629,
+      "canceled": 11,
+      "returned": 31,
+      "total_orders": 671,
+      "risk_pct": 0.06259314456035768,
+      "risk_surcharge": 0.03129657228017884,
+      "risk_multiplier": 1.0312965722801788
+    },
+    {
+      "sku_code": "RSPC",
+      "delivered": 8,
+      "canceled": 0,
+      "returned": 44,
+      "total_orders": 52,
+      "risk_pct": 0.8461538461538461,
+      "risk_surcharge": 0.15,
+      "risk_multiplier": 1.15
+    },
+    {
+      "sku_code": "SCHT",
+      "delivered": 3066,
+      "canceled": 24,
+      "returned": 124,
+      "total_orders": 3214,
+      "risk_pct": 0.04604853764779091,
+      "risk_surcharge": 0.023024268823895456,
+      "risk_multiplier": 1.0230242688238955
+    },
+    {
+      "sku_code": "SHAMEL",
+      "delivered": 196,
+      "canceled": 1,
+      "returned": 10,
+      "total_orders": 207,
+      "risk_pct": 0.05314009661835749,
+      "risk_surcharge": 0.026570048309178744,
+      "risk_multiplier": 1.0265700483091786
+    },
+    {
+      "sku_code": "SMEidbreakfast",
+      "delivered": 2144,
+      "canceled": 30,
+      "returned": 310,
+      "total_orders": 2484,
+      "risk_pct": 0.13687600644122383,
+      "risk_surcharge": 0.06843800322061191,
+      "risk_multiplier": 1.068438003220612
+    },
+    {
+      "sku_code": "SP125MM",
+      "delivered": 4515,
+      "canceled": 217,
+      "returned": 174,
+      "total_orders": 4906,
+      "risk_pct": 0.07969832857725234,
+      "risk_surcharge": 0.03984916428862617,
+      "risk_multiplier": 1.039849164288626
+    },
+    {
+      "sku_code": "SP212MM",
+      "delivered": 687,
+      "canceled": 12,
+      "returned": 79,
+      "total_orders": 778,
+      "risk_pct": 0.11696658097686376,
+      "risk_surcharge": 0.05848329048843188,
+      "risk_multiplier": 1.0584832904884318
+    },
+    {
+      "sku_code": "SP250MM",
+      "delivered": 102104,
+      "canceled": 2299,
+      "returned": 3368,
+      "total_orders": 107771,
+      "risk_pct": 0.05258371918234033,
+      "risk_surcharge": 0.026291859591170166,
+      "risk_multiplier": 1.02629185959117
+    },
+    {
+      "sku_code": "Special",
+      "delivered": 47,
+      "canceled": 1,
+      "returned": 9,
+      "total_orders": 57,
+      "risk_pct": 0.17543859649122806,
+      "risk_surcharge": 0.08771929824561403,
+      "risk_multiplier": 1.087719298245614
+    },
+    {
+      "sku_code": "THYME1000M",
+      "delivered": 10363,
+      "canceled": 232,
+      "returned": 251,
+      "total_orders": 10846,
+      "risk_pct": 0.044532546560944124,
+      "risk_surcharge": 0.022266273280472062,
+      "risk_multiplier": 1.0222662732804721
+    },
+    {
+      "sku_code": "THYME250M",
+      "delivered": 14313,
+      "canceled": 232,
+      "returned": 388,
+      "total_orders": 14933,
+      "risk_pct": 0.04151878390142637,
+      "risk_surcharge": 0.020759391950713184,
+      "risk_multiplier": 1.0207593919507132
+    },
+    {
+      "sku_code": "THYME500M",
+      "delivered": 8313,
+      "canceled": 153,
+      "returned": 188,
+      "total_orders": 8654,
+      "risk_pct": 0.039403743933441183,
+      "risk_surcharge": 0.019701871966720592,
+      "risk_multiplier": 1.0197018719667206
+    },
+    {
+      "sku_code": "VITACHBOX",
+      "delivered": 326,
+      "canceled": 37,
+      "returned": 10,
+      "total_orders": 373,
+      "risk_pct": 0.1260053619302949,
+      "risk_surcharge": 0.06300268096514745,
+      "risk_multiplier": 1.0630026809651474
+    },
+    {
+      "sku_code": "Z180M",
+      "delivered": 11751,
+      "canceled": 320,
+      "returned": 487,
+      "total_orders": 12558,
+      "risk_pct": 0.06426182513139035,
+      "risk_surcharge": 0.032130912565695176,
+      "risk_multiplier": 1.0321309125656952
+    },
+    {
+      "sku_code": "Z280M",
+      "delivered": 1190,
+      "canceled": 19,
+      "returned": 81,
+      "total_orders": 1290,
+      "risk_pct": 0.07751937984496124,
+      "risk_surcharge": 0.03875968992248062,
+      "risk_multiplier": 1.0387596899224807
+    },
+    {
+      "sku_code": "bag",
+      "delivered": 51,
+      "canceled": 2,
+      "returned": 1,
+      "total_orders": 54,
+      "risk_pct": 0.05555555555555555,
+      "risk_surcharge": 0.027777777777777776,
+      "risk_multiplier": 1.0277777777777777
+    },
+    {
+      "sku_code": "cholivbox6",
+      "delivered": 1535,
+      "canceled": 70,
+      "returned": 2,
+      "total_orders": 1607,
+      "risk_pct": 0.044803982576229,
+      "risk_surcharge": 0.0224019912881145,
+      "risk_multiplier": 1.0224019912881146
+    },
+    {
+      "sku_code": "hmous1",
+      "delivered": 7508,
+      "canceled": 84,
+      "returned": 213,
+      "total_orders": 7805,
+      "risk_pct": 0.03805253042921204,
+      "risk_surcharge": 0.01902626521460602,
+      "risk_multiplier": 1.019026265214606
+    },
+    {
+      "sku_code": "hmousbox12",
+      "delivered": 20251,
+      "canceled": 126,
+      "returned": 692,
+      "total_orders": 21069,
+      "risk_pct": 0.03882481370734254,
+      "risk_surcharge": 0.01941240685367127,
+      "risk_multiplier": 1.0194124068536712
+    },
+    {
+      "sku_code": "hmousbox36",
+      "delivered": 2393,
+      "canceled": 0,
+      "returned": 62,
+      "total_orders": 2455,
+      "risk_pct": 0.02525458248472505,
+      "risk_surcharge": 0.012627291242362525,
+      "risk_multiplier": 1.0126272912423626
+    },
+    {
+      "sku_code": "pickles24",
+      "delivered": 2083,
+      "canceled": 21,
+      "returned": 104,
+      "total_orders": 2208,
+      "risk_pct": 0.05661231884057971,
+      "risk_surcharge": 0.028306159420289856,
+      "risk_multiplier": 1.0283061594202898
+    },
+    {
+      "sku_code": "pickles24ABK",
+      "delivered": 248,
+      "canceled": 3,
+      "returned": 12,
+      "total_orders": 263,
+      "risk_pct": 0.057034220532319393,
+      "risk_surcharge": 0.028517110266159697,
+      "risk_multiplier": 1.0285171102661597
+    },
+    {
+      "sku_code": "pickles24GD",
+      "delivered": 232,
+      "canceled": 0,
+      "returned": 12,
+      "total_orders": 244,
+      "risk_pct": 0.04918032786885246,
+      "risk_surcharge": 0.02459016393442623,
+      "risk_multiplier": 1.0245901639344261
+    },
+    {
+      "sku_code": "pickles24GN",
+      "delivered": 104,
+      "canceled": 1,
+      "returned": 6,
+      "total_orders": 111,
+      "risk_pct": 0.06306306306306306,
+      "risk_surcharge": 0.03153153153153153,
+      "risk_multiplier": 1.0315315315315314
+    },
+    {
+      "sku_code": "pickles24MD",
+      "delivered": 330,
+      "canceled": 4,
+      "returned": 16,
+      "total_orders": 350,
+      "risk_pct": 0.05714285714285714,
+      "risk_surcharge": 0.02857142857142857,
+      "risk_multiplier": 1.0285714285714285
+    },
+    {
+      "sku_code": "sub100",
+      "delivered": 1086,
+      "canceled": 35,
+      "returned": 113,
+      "total_orders": 1234,
+      "risk_pct": 0.11993517017828201,
+      "risk_surcharge": 0.059967585089141004,
+      "risk_multiplier": 1.059967585089141
+    }
+  ],
+  "sku_demand": [
+    {
+      "sku_code": "SP250MM",
+      "qty": 114119,
+      "demand_factor": 1.3
+    },
+    {
+      "sku_code": "2LM3M",
+      "qty": 87904,
+      "demand_factor": 1.1801586303843472
+    },
+    {
+      "sku_code": "0.5TM3T",
+      "qty": 65533,
+      "demand_factor": 1.077890033028949
+    },
+    {
+      "sku_code": "NATIONALDAY93T",
+      "qty": 59020,
+      "demand_factor": 1.0481159784683254
+    },
+    {
+      "sku_code": "OLIVEOILE1000M",
+      "qty": 49754,
+      "demand_factor": 1.005756637218711
+    },
+    {
+      "sku_code": "OLIVEOILE5000B",
+      "qty": 37179,
+      "demand_factor": 0.9482702659458966
+    },
+    {
+      "sku_code": "4LM3M",
+      "qty": 35905,
+      "demand_factor": 0.9424461993851359
+    },
+    {
+      "sku_code": "CRACK4",
+      "qty": 35897,
+      "demand_factor": 0.9424096275386005
+    },
+    {
+      "sku_code": "OLIVEOILE2000M",
+      "qty": 33561,
+      "demand_factor": 0.9317306483502669
+    },
+    {
+      "sku_code": "OLIVEOILE4000M",
+      "qty": 26620,
+      "demand_factor": 0.9
+    }
+  ],
+  "city_demand": [
+    {
+      "city": "Riyadh",
+      "orders": 171541,
+      "geo_factor": 1.15
+    },
+    {
+      "city": "Jeddah",
+      "orders": 76136,
+      "geo_factor": 1.0303173806686319
+    },
+    {
+      "city": "Medina",
+      "orders": 33547,
+      "geo_factor": 0.9768907984695477
+    },
+    {
+      "city": "Mecca",
+      "orders": 31867,
+      "geo_factor": 0.9747832904723075
+    },
+    {
+      "city": "Dammam",
+      "orders": 31037,
+      "geo_factor": 0.9737420811641473
+    },
+    {
+      "city": "Taif",
+      "orders": 24157,
+      "geo_factor": 0.9651113341278303
+    },
+    {
+      "city": "Al Ahsa",
+      "orders": 23414,
+      "geo_factor": 0.96417926362667
+    },
+    {
+      "city": "Hail",
+      "orders": 17561,
+      "geo_factor": 0.9568368563005707
+    },
+    {
+      "city": "Khamis Mushait",
+      "orders": 12425,
+      "geo_factor": 0.9503939032804365
+    },
+    {
+      "city": "Buraydah",
+      "orders": 12111,
+      "geo_factor": 0.95
+    }
+  ],
+  "combo_discounts": [
+    {
+      "combo": "['hmousbox12', 'CRACK4']",
+      "count": 4724,
+      "recommended_discount": 0.15
+    },
+    {
+      "combo": "['2LM3M', '0.5TM3T']",
+      "count": 4709,
+      "recommended_discount": 0.1495237087214225
+    },
+    {
+      "combo": "['OLIVEOILE1000M', 'THYME250M']",
+      "count": 3294,
+      "recommended_discount": 0.10459356477561388
+    },
+    {
+      "combo": "['OLIVEOILE1000M', '0.5TM3T']",
+      "count": 2980,
+      "recommended_discount": 0.09462320067739204
+    },
+    {
+      "combo": "['hmousbox12', '0.5TM3T']",
+      "count": 2829,
+      "recommended_discount": 0.0898285351397121
+    },
+    {
+      "combo": "['GRN-PN-CH-003', 'GRN-TST-004']",
+      "count": 2674,
+      "recommended_discount": 0.08490685859441151
+    },
+    {
+      "combo": "['CRACK4', '0.5TM3T']",
+      "count": 2641,
+      "recommended_discount": 0.08385901778154108
+    },
+    {
+      "combo": "['hmousbox12', 'SP250MM']",
+      "count": 2557,
+      "recommended_discount": 0.08119178662150718
+    },
+    {
+      "combo": "['CRACK4', 'MQL-PK01']",
+      "count": 2548,
+      "recommended_discount": 0.08090601185436071
+    },
+    {
+      "combo": "['hmousbox12', 'MQL-PK01']",
+      "count": 2508,
+      "recommended_discount": 0.0796359017781541
+    }
+  ]
+}
