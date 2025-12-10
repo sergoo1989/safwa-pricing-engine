@@ -1836,24 +1836,49 @@ elif st.session_state.page == "pricing":
                 + channel_dict["marketing_pct"]
                 + channel_dict["platform_pct"]
             )
-            fixed_costs = cogs + shipping + preparation + ops_buffer
-            denominator = 1 - total_pct - target_margin
-
-            if denominator <= 0:
-                st.error("الهامش المطلوب غير ممكن مع نسب الرسوم الحالية. خفّض الهامش أو الرسوم أو زد السعر.")
-                st.stop()
-
+            
             # حساب السعر المباشر من المعادلة لتحقيق الهامش المستهدف
             def solve_price_for_margin(target_margin_val: float):
-                """حساب السعر المباشر الذي يحقق الهامش المستهدف"""
-                # المعادلة: السعر الصافي = (COGS + رسوم ثابتة) / (1 - النسب - الهامش)
-                net_price = fixed_costs / (1 - total_pct - target_margin_val)
+                """حساب السعر المباشر الذي يحقق الهامش المستهدف مع مراعاة الشحن المجاني"""
                 
-                # السعر شامل الضريبة بعد الخصم
-                price_with_vat_after_discount = net_price * (1 + vat_rate)
+                # نحاول الحساب مرتين: مرة مع شحن ومرة بدون
+                # ونختار الحل الصحيح بناءً على العتبة
                 
-                # السعر شامل الضريبة قبل الخصم
-                price_before_discount = price_with_vat_after_discount / (1 - discount_rate)
+                for assume_free_shipping in [False, True]:
+                    if assume_free_shipping:
+                        actual_shipping = 0
+                        actual_preparation = 0
+                    else:
+                        actual_shipping = shipping
+                        actual_preparation = preparation
+                    
+                    fixed_costs = cogs + actual_shipping + actual_preparation + ops_buffer
+                    denominator = 1 - total_pct - target_margin_val
+                    
+                    if denominator <= 0:
+                        continue
+                    
+                    # المعادلة: السعر الصافي = (COGS + رسوم ثابتة) / (1 - النسب - الهامش)
+                    net_price = fixed_costs / denominator
+                    
+                    # السعر شامل الضريبة بعد الخصم
+                    price_with_vat_after_discount = net_price * (1 + vat_rate)
+                    
+                    # السعر شامل الضريبة قبل الخصم
+                    price_before_discount = price_with_vat_after_discount / (1 - discount_rate)
+                    
+                    # التحقق: هل افتراضنا بشأن الشحن المجاني صحيح؟
+                    if free_threshold > 0:
+                        if assume_free_shipping and price_with_vat_after_discount >= free_threshold:
+                            # صحيح: السعر >= العتبة والشحن مجاني
+                            break
+                        elif not assume_free_shipping and price_with_vat_after_discount < free_threshold:
+                            # صحيح: السعر < العتبة والشحن مدفوع
+                            break
+                    else:
+                        # لا توجد عتبة - الشحن دائماً مدفوع
+                        if not assume_free_shipping:
+                            break
                 
                 # احسب التفصيل الكامل
                 bd = calculate_price_breakdown(
