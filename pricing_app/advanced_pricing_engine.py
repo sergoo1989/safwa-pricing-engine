@@ -22,7 +22,6 @@ class PricingResult:
     shipping_fee: float
     preparation_fee: float
     platform_fee: float
-    payment_fee: float
     marketing_fee: float
     admin_fee: float
     custom_fees: Dict[str, float]
@@ -94,19 +93,21 @@ class AdvancedPricingEngine:
             shipping = 0
             preparation = 0
         
-        # Calculate net price
-        net_price = price_with_vat / (1 + self.vat_rate)
-        
-        # Calculate price after discount
+        # price_with_vat = السعر شامل الضريبة قبل الخصم (A)
         price_before_discount = price_with_vat
-        if discount_rate > 0:
-            net_price = net_price / (1 - discount_rate)
-            price_with_vat = net_price * (1 + self.vat_rate)
-        price_after_discount = price_with_vat * (1 - discount_rate)
+        
+        # حساب مبلغ الخصم ثم السعر بعد الخصم
+        # مبلغ الخصم = A * نسبة_الخصم
+        discount_amount = price_before_discount * discount_rate
+        
+        # السعر شامل الضريبة بعد الخصم = A - مبلغ_الخصم
+        price_after_discount = price_before_discount - discount_amount
+        
+        # السعر غير شامل الضريبة بعد الخصم = السعر_شامل_بعد_الخصم / 1.15
+        net_price = price_after_discount / (1 + self.vat_rate)
         
         # Calculate fees
         platform_fee = net_price * channel_fees.get('platform_pct', 0)
-        payment_fee = net_price * channel_fees.get('payment_pct', 0)
         marketing_fee = net_price * channel_fees.get('marketing_pct', 0)
         admin_fee = net_price * channel_fees.get('opex_pct', 0)
         
@@ -121,7 +122,7 @@ class AdvancedPricingEngine:
         # Total costs
         total_costs = (
             cogs + shipping + preparation + platform_fee + 
-            payment_fee + marketing_fee + admin_fee + 
+            marketing_fee + admin_fee + 
             sum(custom_fees_total.values())
         )
         
@@ -156,7 +157,6 @@ class AdvancedPricingEngine:
             shipping_fee=shipping,
             preparation_fee=preparation,
             platform_fee=platform_fee,
-            payment_fee=payment_fee,
             marketing_fee=marketing_fee,
             admin_fee=admin_fee,
             custom_fees=custom_fees_total,
@@ -218,7 +218,6 @@ class AdvancedPricingEngine:
         # Calculate total percentage fees
         total_pct = (
             channel_fees.get('platform_pct', 0) +
-            channel_fees.get('payment_pct', 0) +
             channel_fees.get('marketing_pct', 0) +
             channel_fees.get('opex_pct', 0)
         )
@@ -260,7 +259,6 @@ class AdvancedPricingEngine:
         # Calculate total percentage fees
         total_pct = (
             channel_fees.get('platform_pct', 0) +
-            channel_fees.get('payment_pct', 0) +
             channel_fees.get('marketing_pct', 0) +
             channel_fees.get('opex_pct', 0)
         )
@@ -328,7 +326,6 @@ class AdvancedPricingEngine:
             
             total_pct = sum([
                 channel_fees.get('platform_pct', 0),
-                channel_fees.get('payment_pct', 0),
                 channel_fees.get('marketing_pct', 0),
                 channel_fees.get('opex_pct', 0)
             ])
@@ -352,7 +349,6 @@ class AdvancedPricingEngine:
             
             total_pct = sum([
                 channel_fees.get('platform_pct', 0),
-                channel_fees.get('payment_pct', 0),
                 channel_fees.get('marketing_pct', 0),
                 channel_fees.get('opex_pct', 0)
             ])

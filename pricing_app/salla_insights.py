@@ -268,29 +268,39 @@ class SallaInsights:
         
         return top_products
     
-    def get_seasonal_recommendations(self):
+    def get_seasonal_recommendations(self, df=None, top_n_per_month: int = 3):
         """
-        توصيات موسمية - أفضل منتج لكل شهر
+        توصيات موسمية - أفضل المنتجات لكل شهر (يحترم الفلاتر إذا تم تمرير DataFrame مخصص)
         """
-        if self.orders_df is None:
+        data = df if df is not None else self.orders_df
+        if data is None or data.empty:
             return None
-        
-        monthly_sales = self.orders_df.groupby(['month', 'sku_code', 'sku_name'])['qty'].sum().reset_index()
-        
-        # أفضل منتج لكل شهر
-        best_per_month = monthly_sales.sort_values(['month', 'qty'], ascending=[True, False])
-        best_per_month = best_per_month.groupby('month').first().reset_index()
-        
+
+        # تأكد من وجود أعمدة السنة/الشهر
+        if 'month' not in data.columns and 'order_date' in data.columns:
+            data = data.copy()
+            data['month'] = pd.to_datetime(data['order_date'], errors='coerce').dt.month
+        if 'year' not in data.columns and 'order_date' in data.columns:
+            data = data.copy()
+            data['year'] = pd.to_datetime(data['order_date'], errors='coerce').dt.year
+
+        monthly_sales = data.groupby(['year', 'month', 'sku_code', 'sku_name'])['qty'].sum().reset_index()
+        monthly_sales = monthly_sales.dropna(subset=['month'])
+
+        # أفضل N منتجات لكل شهر (ولكل سنة في حال تعدد السنوات)
+        monthly_sales = monthly_sales.sort_values(['year', 'month', 'qty'], ascending=[False, True, False])
+        best_per_month = monthly_sales.groupby(['year', 'month']).head(max(1, top_n_per_month)).reset_index(drop=True)
+
         months_ar = {
             1: "يناير", 2: "فبراير", 3: "مارس", 4: "أبريل",
             5: "مايو", 6: "يونيو", 7: "يوليو", 8: "أغسطس",
             9: "سبتمبر", 10: "أكتوبر", 11: "نوفمبر", 12: "ديسمبر"
         }
-        
+
         best_per_month['الشهر'] = best_per_month['month'].map(months_ar)
-        best_per_month = best_per_month[['الشهر', 'sku_code', 'sku_name', 'qty']]
-        best_per_month.columns = ['الشهر', 'SKU', 'اسم المنتج', 'الكمية']
-        
+        best_per_month = best_per_month[['year', 'الشهر', 'sku_code', 'sku_name', 'qty']]
+        best_per_month.columns = ['السنة', 'الشهر', 'SKU', 'اسم المنتج', 'الكمية']
+
         return best_per_month
     
     def get_city_recommendations(self, top_n=5):

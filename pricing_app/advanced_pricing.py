@@ -30,8 +30,8 @@ def calculate_breakeven_price(
     # حساب نسب الرسوم
     admin_pct = channel_fees.get('opex_pct', 0.04)
     marketing_pct = channel_fees.get('marketing_pct', 0.28)
-    payment_pct = channel_fees.get('payment_pct', 0.025)
-    total_pct = admin_pct + marketing_pct + payment_pct
+    platform_pct = channel_fees.get('platform_pct', 0.0)
+    total_pct = admin_pct + marketing_pct + platform_pct
     
     # حساب الرسوم الثابتة والنسبية المخصصة
     custom_fixed_fees = 0
@@ -98,11 +98,10 @@ def calculate_price_breakdown(
     if custom_fees is None:
         custom_fees = {}
     
-    # حساب نسبة الرسوم الإجمالية (بدون رسوم منصات)
-    admin_pct = channel_fees.get('opex_pct', 0.04)  # مصاريف إدارية
-    marketing_pct = channel_fees.get('marketing_pct', 0.28)  # مصاريف تسويق
-    payment_pct = channel_fees.get('payment_pct', 0.025)  # رسوم دفع
-    platform_pct = channel_fees.get('platform_pct', 0.0)  # رسوم المنصة
+    # حساب نسبة الرسوم الإجمالية
+    admin_pct = channel_fees.get('opex_pct', 0.04)  # مصاريف إدارية (H)
+    marketing_pct = channel_fees.get('marketing_pct', 0.28)  # مصاريف تسويق (I)
+    platform_pct = channel_fees.get('platform_pct', 0.0)  # رسوم المنصة (K)
     
     # Step 1: حساب السعر الصافي بدون ضريبة وبدون خصم
     if price_with_vat is not None and price_with_vat > 0:
@@ -121,7 +120,7 @@ def calculate_price_breakdown(
     else:
         # الطريقة القديمة: حساب السعر من COGS
         target_margin = 0.09  # هامش افتراضي 9%
-        total_fees_pct = admin_pct + marketing_pct + payment_pct
+        total_fees_pct = admin_pct + marketing_pct + platform_pct
         net_price_excl_vat_and_discount = cogs / (1 - total_fees_pct - target_margin)
         
         # السعر مع الضريبة = D * (1 + VAT)
@@ -143,13 +142,12 @@ def calculate_price_breakdown(
         actual_shipping = shipping
         actual_preparation = preparation
     
-    # حساب الرسوم على السعر الصافي
-    admin_fee = net_price_excl_vat_and_discount * admin_pct
-    marketing_fee = net_price_excl_vat_and_discount * marketing_pct
-    payment_fee = net_price_excl_vat_and_discount * payment_pct
-    platform_fee = net_price_excl_vat_and_discount * platform_pct
+    # حساب الرسوم على السعر الصافي (D)
+    admin_fee = net_price_excl_vat_and_discount * admin_pct      # H = D × نسبة
+    marketing_fee = net_price_excl_vat_and_discount * marketing_pct  # I = D × نسبة
+    platform_fee = net_price_excl_vat_and_discount * platform_pct    # K = D × نسبة
 
-    total_fees = admin_fee + marketing_fee + payment_fee + platform_fee
+    total_fees = admin_fee + marketing_fee + platform_fee  # مجموع الرسوم النسبية
     
     # حساب الرسوم الإضافية المخصصة مع تتبع الثابت والنِسبي
     custom_fees_dict = {}
@@ -170,7 +168,7 @@ def calculate_price_breakdown(
             custom_fees_total += fee_amount
 
     # Step 3: حساب الربح ونقاط التسعير للهوامش المختلفة
-    total_pct_fees = admin_pct + marketing_pct + payment_pct + platform_pct + custom_pct_fees
+    total_pct_fees = admin_pct + marketing_pct + platform_pct + custom_pct_fees  # مجموع النسب
 
     def price_for_margin(target_margin: float) -> float:
         """سعر البيع شامل الضريبة قبل الخصم لتحقيق هامش مستهدف مع احترام شرط الشحن المجاني."""
@@ -230,7 +228,6 @@ def calculate_price_breakdown(
         'admin_fee': admin_fee,  # H - مصاريف إدارية
         'marketing_fee': marketing_fee,  # I - مصاريف تسويق
         'platform_fee': platform_fee,  # K - رسوم المنصات
-        'payment_fee': payment_fee,  # رسوم الدفع
         
         # الإجمالي والربح
         'total_costs_fees': cogs + actual_shipping + actual_preparation + total_fees + custom_fees_total,  # L - إجمالي التكاليف

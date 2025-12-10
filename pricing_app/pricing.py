@@ -18,7 +18,6 @@ def price_item(
     
     total_fee_pct = (
         channel_fees.platform_pct +
-        channel_fees.payment_pct +
         channel_fees.marketing_pct +
         channel_fees.opex_pct +
         target_margin

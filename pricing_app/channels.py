@@ -70,7 +70,6 @@ def calculate_price_with_fees(cogs: float, channel_fees: ChannelFees, target_mar
     # Calculate total fees percentage
     total_fees_pct = (
         channel_fees.platform_pct +
-        channel_fees.payment_pct +
         channel_fees.marketing_pct +
         channel_fees.opex_pct
     )
@@ -80,7 +79,6 @@ def calculate_price_with_fees(cogs: float, channel_fees: ChannelFees, target_mar
     
     # Calculate fees amounts
     platform_fee = net_price_excl_vat * channel_fees.platform_pct
-    payment_fee = net_price_excl_vat * channel_fees.payment_pct
     marketing_fee = net_price_excl_vat * channel_fees.marketing_pct
     opex_fee = net_price_excl_vat * channel_fees.opex_pct
     
@@ -91,15 +89,14 @@ def calculate_price_with_fees(cogs: float, channel_fees: ChannelFees, target_mar
     price_with_vat = discounted_price * (1 + channel_fees.vat_rate)
     
     # Calculate profit
-    profit = price_with_vat - cogs - (platform_fee + payment_fee + marketing_fee + opex_fee)
+    profit = price_with_vat - cogs - (platform_fee + marketing_fee + opex_fee)
     
     return {
         'cogs': cogs,
         'platform_fee': platform_fee,
-        'payment_fee': payment_fee,
         'marketing_fee': marketing_fee,
         'opex_fee': opex_fee,
-        'total_fees': platform_fee + payment_fee + marketing_fee + opex_fee,
+        'total_fees': platform_fee + marketing_fee + opex_fee,
         'shipping_fee': channel_fees.shipping_fixed,
         'preparation_fee': channel_fees.preparation_fee,
         'net_price_excl_vat': net_price_excl_vat,

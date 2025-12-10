@@ -672,7 +672,11 @@ quantity"""
         os.makedirs("data", exist_ok=True)
         existing_files = [f for f in os.listdir("data") if f.startswith("salla_orders") and not f.endswith(".db")]
         if existing_files:
-            selected = st.selectbox("اختر ملفاً موجوداً في data/", existing_files, key="existing_salla_file")
+            # أعطِ الأولوية للملف المفكك ثم الكامل ثم العينة
+            priority = {"salla_orders_exploded.csv": 0, "salla_orders.csv": 1, "salla_orders_sample.csv": 2}
+            existing_files = sorted(existing_files, key=lambda x: priority.get(x, 99))
+            default_index = 0  # أول عنصر هو الأعلى أولوية
+            selected = st.selectbox("اختر ملفاً موجوداً في data/", existing_files, key="existing_salla_file", index=default_index)
             if st.button("تحميل الملف الموجود", type="primary"):
                 try:
                     path = os.path.join("data", selected)
@@ -1827,7 +1831,6 @@ elif st.session_state.page == "pricing":
                 "opex_pct": ch.opex_pct,
                 "marketing_pct": marketing_effective,
                 "platform_pct": ch.platform_pct,
-                "payment_pct": ch.payment_pct,
                 "vat_rate": vat_rate,
                 "discount_rate": discount_rate,
             }
@@ -1836,7 +1839,6 @@ elif st.session_state.page == "pricing":
                 channel_dict["opex_pct"]
                 + channel_dict["marketing_pct"]
                 + channel_dict["platform_pct"]
-                + channel_dict["payment_pct"]
             )
             
             # حساب السعر المباشر من المعادلة لتحقيق الهامش المستهدف
@@ -2137,8 +2139,7 @@ elif st.session_state.page == "pricing":
                         rows.append(("المصاريف الإدارية", bd["admin_fee"], f"{rate_map['admin']*100:.1f}%"))
                     if bd["marketing_fee"] > 0:
                         rows.append(("مصاريف التسويق", bd["marketing_fee"], f"{rate_map['marketing']*100:.1f}%"))
-                    if bd["platform_fee"] > 0:
-                        rows.append(("رسوم المنصات", bd["platform_fee"], f"{rate_map['platform']*100:.1f}%"))
+                    # رسوم المنصات تم إيقاف احتسابها
                     if custom_total > 0:
                         rows.append(("رسوم مخصصة", custom_total, ""))
 
@@ -2670,7 +2671,6 @@ elif st.session_state.page == "custom_package":
                     "opex_pct": ch.opex_pct,
                     "marketing_pct": ch.marketing_pct + (marketing_boost / 100),
                     "platform_pct": ch.platform_pct,
-                    "payment_pct": ch.payment_pct,
                     "vat_rate": vat_rate,
                     "discount_rate": discount_pct,
                 }
@@ -2689,9 +2689,8 @@ elif st.session_state.page == "custom_package":
                 admin_pct = channel_dict["opex_pct"]
                 marketing_pct = channel_dict["marketing_pct"]
                 platform_pct = channel_dict["platform_pct"]
-                payment_pct = channel_dict.get("payment_pct", 0.0)
                 
-                total_pct = admin_pct + marketing_pct + platform_pct + payment_pct + custom_pct
+                total_pct = admin_pct + marketing_pct + platform_pct + custom_pct
                 denom = 1 - total_pct - target_margin
 
                 if denom <= 0 or (1 - discount_pct) <= 0:
@@ -2816,8 +2815,7 @@ elif st.session_state.page == "custom_package":
                         rows.append(("المصاريف الإدارية", bd.get("admin_fee", 0), f"{rate_map['admin']*100:.1f}%"))
                     if bd.get("marketing_fee", 0) > 0:
                         rows.append(("مصاريف التسويق", bd.get("marketing_fee", 0), f"{rate_map['marketing']*100:.1f}%"))
-                    if bd.get("platform_fee", 0) > 0:
-                        rows.append(("رسوم المنصات", bd.get("platform_fee", 0), f"{rate_map['platform']*100:.1f}%"))
+                    # رسوم المنصات تم إيقاف احتسابها
                     if custom_total > 0:
                         rows.append(("رسوم مخصصة", custom_total, None))
 
@@ -3889,8 +3887,25 @@ elif st.session_state.page == "salla_analysis":
         if 'رقم الطلب' in orders_df.columns:
             orders_df = orders_df.rename(columns=column_mapping)
         
-        # تحويل التاريخ
-        orders_df['order_date'] = pd.to_datetime(orders_df['order_date'], errors='coerce', dayfirst=True)
+        # تحويل التاريخ مع تعزيزات للفورمات المختلفة حتى لا نفقد سنوات حديثة (2024/2025)
+        orders_df['order_date'] = pd.to_datetime(
+            orders_df['order_date'], errors='coerce', dayfirst=True, infer_datetime_format=True
+        )
+        if orders_df['order_date'].isna().any():
+            # محاولة ثانية بصيغة ISO/UTC مثل 2024-12-01T10:00:00Z
+            orders_df.loc[orders_df['order_date'].isna(), 'order_date'] = pd.to_datetime(
+                orders_df.loc[orders_df['order_date'].isna(), 'order_date'],
+                errors='coerce',
+                format='ISO8601',
+                utc=True,
+            )
+        if orders_df['order_date'].isna().any():
+            # أخيراً: استخرج السنة/الشهر رقمياً إذا بقيت قيم غير قابلة للتحويل
+            raw_dates = orders_df.loc[orders_df['order_date'].isna(), 'order_date']
+            extracted_year = raw_dates.str.extract(r'(20\d{2})')[0]
+            extracted_month = raw_dates.str.extract(r'-(\d{1,2})-')[0]
+            orders_df.loc[orders_df['order_date'].isna(), 'year'] = pd.to_numeric(extracted_year, errors='coerce')
+            orders_df.loc[orders_df['order_date'].isna(), 'month'] = pd.to_numeric(extracted_month, errors='coerce')
         
         # تفكيك SKU إذا لزم الأمر
         if 'sku_raw' in orders_df.columns and 'sku_code' not in orders_df.columns:
@@ -3941,9 +3956,16 @@ elif st.session_state.page == "salla_analysis":
                 st.success(f"✅ تم التفكيك! {len(orders_df):,} صف من {total_rows:,} طلب")
                 progress_bar.empty()
         
-        # استخراج السنة والشهر
-        orders_df['year'] = orders_df['order_date'].dt.year
-        orders_df['month'] = orders_df['order_date'].dt.month
+        # استخراج السنة والشهر مع استكمال النواقص من التاريخ المحوّل
+        year_series = orders_df.get('year')
+        if year_series is None:
+            year_series = pd.Series(dtype='float64', index=orders_df.index)
+        month_series = orders_df.get('month')
+        if month_series is None:
+            month_series = pd.Series(dtype='float64', index=orders_df.index)
+
+        orders_df['year'] = year_series.fillna(orders_df['order_date'].dt.year)
+        orders_df['month'] = month_series.fillna(orders_df['order_date'].dt.month)
         orders_df['year_month'] = orders_df['order_date'].dt.to_period('M').astype(str)
         
     except Exception as e:
@@ -4152,6 +4174,8 @@ elif st.session_state.page == "salla_analysis":
                 # تحميل المحلل
                 analyzer = SallaInsights(orders_file)
                 analyzer.load_pricing_data()
+                # اجعل التحليلات تحترم الفلاتر المطبقة أعلى الصفحة
+                analyzer.orders_df = filtered_df.copy()
             
             # تبويبات التحليلات
             tab0, tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -4311,16 +4335,71 @@ elif st.session_state.page == "salla_analysis":
                     st.info("لا توجد بيانات طلبات متاحة")
             
             with tab2:
-                st.subheader("📅 أفضل المنتجات لكل شهر")
-                
-                seasonal = analyzer.get_seasonal_recommendations()
-                if seasonal is not None:
-                    st.dataframe(seasonal, hide_index=True, use_container_width=True)
-                    
+                st.subheader("📅 أفضل المنتجات لكل شهر (يحترم الفلاتر)")
+
+                seasonal_all = analyzer.get_seasonal_recommendations(df=filtered_df, top_n_per_month=3)
+
+                # عرض أحدث شهر أولاً لتفادي إظهار يناير افتراضياً
+                if seasonal_all is not None and not seasonal_all.empty:
+                    latest_year = seasonal_all['السنة'].max()
+                    latest_month_num = (
+                        seasonal_all[seasonal_all['السنة'] == latest_year]
+                        .assign(m=lambda d: d['الشهر'])
+                        .replace({
+                            'يناير': 1, 'فبراير': 2, 'مارس': 3, 'أبريل': 4,
+                            'مايو': 5, 'يونيو': 6, 'يوليو': 7, 'أغسطس': 8,
+                            'سبتمبر': 9, 'أكتوبر': 10, 'نوفمبر': 11, 'ديسمبر': 12
+                        })['m'].max()
+                    )
+                    months_ar = {
+                        1: "يناير", 2: "فبراير", 3: "مارس", 4: "أبريل",
+                        5: "مايو", 6: "يونيو", 7: "يوليو", 8: "أغسطس",
+                        9: "سبتمبر", 10: "أكتوبر", 11: "نوفمبر", 12: "ديسمبر"
+                    }
+                    latest_month_name = months_ar.get(latest_month_num, "")
+
+                    st.markdown(f"#### 🟢 أحدث شهر: {latest_month_name} {latest_year}")
+                    latest_df = seasonal_all[
+                        (seasonal_all['السنة'] == latest_year) & (seasonal_all['الشهر'] == latest_month_name)
+                    ].reset_index(drop=True)
+                    st.dataframe(latest_df, hide_index=True, use_container_width=True)
+
+                    with st.expander("عرض كل الشهور (أفضل 3 لكل شهر)"):
+                        st.dataframe(seasonal_all, hide_index=True, use_container_width=True)
+
                     st.markdown("**💡 التوصية:**")
-                    st.info("استخدم هذه البيانات لتخطيط المخزون والحملات التسويقية الموسمية")
+                    st.info(
+                        "يعرض الجدول أعلى 3 منتجات لكل شهر بعد تطبيق الفلاتر. تم إبراز أحدث شهر أولاً لتخطيط المخزون والحملات." 
+                    )
                 else:
-                    st.info("لا توجد بيانات كافية للتحليل الموسمي")
+                    st.info("لا توجد بيانات كافية للتحليل الموسمي بعد تطبيق الفلاتر")
+
+                # أفضل منتج لكل مدينة (يحترم الفلاتر)
+                if not filtered_df.empty:
+                    st.markdown("---")
+                    st.markdown("### 🏙️ أفضل منتج لكل مدينة")
+                    top_city = (
+                        filtered_df.dropna(subset=['city'])
+                        .groupby(['city', 'sku_code', 'sku_name'])['qty']
+                        .sum()
+                        .reset_index()
+                        .sort_values(['city', 'qty'], ascending=[True, False])
+                    )
+                    top_city = top_city.groupby('city').head(1).reset_index(drop=True)
+                    top_city.columns = ['المدينة', 'SKU', 'اسم المنتج', 'الكمية']
+                    st.dataframe(top_city, hide_index=True, use_container_width=True)
+
+                    st.markdown("### 💳 أفضل منتج لكل طريقة دفع")
+                    top_payment = (
+                        filtered_df.dropna(subset=['payment_method'])
+                        .groupby(['payment_method', 'sku_code', 'sku_name'])['qty']
+                        .sum()
+                        .reset_index()
+                        .sort_values(['payment_method', 'qty'], ascending=[True, False])
+                    )
+                    top_payment = top_payment.groupby('payment_method').head(1).reset_index(drop=True)
+                    top_payment.columns = ['طريقة الدفع', 'SKU', 'اسم المنتج', 'الكمية']
+                    st.dataframe(top_payment, hide_index=True, use_container_width=True)
             
             with tab3:
                 st.subheader("🤝 المنتجات التي تُباع معًا")
