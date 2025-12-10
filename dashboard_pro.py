@@ -210,8 +210,54 @@ def load_all_data():
 try:
     materials, product_recipes, products_summary, package_compositions, packages_summary = load_all_data()
 except Exception as e:
-    st.error(f"خطأ في تحميل البيانات: {e}")
-    st.info("تأكد من وجود مجلد data مع جميع الملفات المطلوبة")
+    st.error(f"❌ خطأ في تحميل البيانات: {e}")
+    st.info("""
+    📝 **ملفات البيانات المطلوبة في مجلد `data`:**
+    - `raw_materials_template.csv` (المواد الخام)
+    - `products_template.csv` (المنتجات)
+    - `packages_template.csv` (البكجات)
+    
+    💡 **كيفية الحل:**
+    1. انتقل إلى صفحة "رفع الملفات" من القائمة الجانبية
+    2. قم برفع الملفات المطلوبة
+    3. أو قم بإنشاء ملفات جديدة فارغة
+    """)
+    
+    # محاولة إنشاء ملفات فارغة كحل مؤقت
+    import os
+    os.makedirs("data", exist_ok=True)
+    
+    if st.button("🔧 إنشاء ملفات بيانات فارغة"):
+        import pandas as pd
+        
+        # إنشاء ملف المواد الخام
+        pd.DataFrame({
+            'Material_Name': [],
+            'Material_SKU': [],
+            'Category': [],
+            'Purchase_UoM': [],
+            'Cost_Price': []
+        }).to_csv('data/raw_materials_template.csv', index=False)
+        
+        # إنشاء ملف المنتجات
+        pd.DataFrame({
+            'Product_Name': [],
+            'Product_SKU': [],
+            'Material_SKU': [],
+            'Quantity': []
+        }).to_csv('data/products_template.csv', index=False)
+        
+        # إنشاء ملف البكجات
+        pd.DataFrame({
+            'Package_Name': [],
+            'Package_SKU': [],
+            'Item_SKU': [],
+            'Quantity': []
+        }).to_csv('data/packages_template.csv', index=False)
+        
+        st.success("✅ تم إنشاء الملفات الفارغة! يرجى إعادة تحميل الصفحة.")
+        st.rerun()
+    
     st.stop()
 
 # Initialize advanced pricing engine
