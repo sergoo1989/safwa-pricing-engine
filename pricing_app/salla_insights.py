@@ -10,6 +10,8 @@ from datetime import datetime
 from collections import defaultdict
 import json
 
+from pricing_app.data_loader import load_cost_data
+
 
 class SallaInsights:
     """محلل ذكي لبيانات سلة مع ربطها بمنتجات التسعير"""
@@ -22,6 +24,11 @@ class SallaInsights:
         self.products_df = None
         self.packages_df = None
         self.raw_materials_df = None
+        self.materials = None
+        self.product_recipes = None
+        self.package_compositions = None
+        self._product_cost_cache = {}
+        self._package_cost_cache = {}
         
         if Path(orders_file).exists():
             self.orders_df = pd.read_csv(orders_file)
@@ -33,13 +40,66 @@ class SallaInsights:
                          packages_file="data/packages_template.csv",
                          raw_materials_file="data/raw_materials_template.csv"):
         """تحميل بيانات التسعير"""
+        # تحميل بيانات التكلفة (مواد، وصفات منتجات، مكونات بكجات)
+        data_dir = str(Path(products_file).parent)
+        self.materials, self.product_recipes, products_summary, self.package_compositions, packages_summary = load_cost_data(data_dir)
+
+        # تجهيز DataFrames مع أعمدة COGS المطلوبة من بقية الكود
+        def _calc_cost_for_product(prod_sku: str, seen=None) -> float:
+            """حساب تكلفة منتج من مكوناته مع دعم التكرار المتداخل."""
+            if prod_sku in self._product_cost_cache:
+                return self._product_cost_cache[prod_sku]
+            seen = seen or set()
+            if prod_sku in seen:
+                return 0.0
+            seen.add(prod_sku)
+            recipe = (self.product_recipes or {}).get(prod_sku, {})
+            total = 0.0
+            for comp_sku, qty in recipe.items():
+                if comp_sku in self.materials:
+                    total += self.materials[comp_sku].cost_per_unit * qty
+                elif comp_sku in (self.product_recipes or {}):
+                    total += _calc_cost_for_product(comp_sku, seen) * qty
+                elif comp_sku in (self.package_compositions or {}):
+                    total += _calc_cost_for_package(comp_sku, seen) * qty
+            self._product_cost_cache[prod_sku] = total
+            return total
+
+        def _calc_cost_for_package(pkg_sku: str, seen=None) -> float:
+            if pkg_sku in self._package_cost_cache:
+                return self._package_cost_cache[pkg_sku]
+            seen = seen or set()
+            if pkg_sku in seen:
+                return 0.0
+            seen.add(pkg_sku)
+            comps = (self.package_compositions or {}).get(pkg_sku, {})
+            total = 0.0
+            for comp_sku, qty in comps.items():
+                if comp_sku in self.materials:
+                    total += self.materials[comp_sku].cost_per_unit * qty
+                elif comp_sku in (self.product_recipes or {}):
+                    total += _calc_cost_for_product(comp_sku, seen) * qty
+                elif comp_sku in (self.package_compositions or {}):
+                    total += _calc_cost_for_package(comp_sku, seen) * qty
+            self._package_cost_cache[pkg_sku] = total
+            return total
+
+        # بناء جداول مع COGS
+        product_rows = []
+        for _, row in products_summary.iterrows():
+            sku = row["Product_SKU"]
+            cost = _calc_cost_for_product(sku)
+            product_rows.append({"Product_Name": row["Product_Name"], "SKU": sku, "COGS": cost})
+        self.products_df = pd.DataFrame(product_rows)
+
+        package_rows = []
+        for _, row in packages_summary.iterrows():
+            sku = row["Package_SKU"]
+            cost = _calc_cost_for_package(sku)
+            package_rows.append({"Package_Name": row["Package_Name"], "SKU": sku, "Total_COGS": cost})
+        self.packages_df = pd.DataFrame(package_rows)
         
-        if Path(products_file).exists():
-            self.products_df = pd.read_csv(products_file)
-        
-        if Path(packages_file).exists():
-            self.packages_df = pd.read_csv(packages_file)
-        
+        # تحميل المواد الخام للرجوع إليها لاحقاً إذا احتجناها
         if Path(raw_materials_file).exists():
             self.raw_materials_df = pd.read_csv(raw_materials_file)
     
