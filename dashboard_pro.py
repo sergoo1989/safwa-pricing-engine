@@ -2139,7 +2139,8 @@ elif st.session_state.page == "pricing":
                         rows.append(("المصاريف الإدارية", bd["admin_fee"], f"{rate_map['admin']*100:.1f}%"))
                     if bd["marketing_fee"] > 0:
                         rows.append(("مصاريف التسويق", bd["marketing_fee"], f"{rate_map['marketing']*100:.1f}%"))
-                    # رسوم المنصات تم إيقاف احتسابها
+                    if bd["platform_fee"] > 0:
+                        rows.append(("رسوم المنصات", bd["platform_fee"], f"{rate_map['platform']*100:.1f}%"))
                     if custom_total > 0:
                         rows.append(("رسوم مخصصة", custom_total, ""))
 
@@ -2815,7 +2816,8 @@ elif st.session_state.page == "custom_package":
                         rows.append(("المصاريف الإدارية", bd.get("admin_fee", 0), f"{rate_map['admin']*100:.1f}%"))
                     if bd.get("marketing_fee", 0) > 0:
                         rows.append(("مصاريف التسويق", bd.get("marketing_fee", 0), f"{rate_map['marketing']*100:.1f}%"))
-                    # رسوم المنصات تم إيقاف احتسابها
+                    if bd.get("platform_fee", 0) > 0:
+                        rows.append(("رسوم المنصات", bd.get("platform_fee", 0), f"{rate_map['platform']*100:.1f}%"))
                     if custom_total > 0:
                         rows.append(("رسوم مخصصة", custom_total, None))
 
