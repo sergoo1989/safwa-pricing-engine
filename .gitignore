@@ -8,5 +8,14 @@ venv/
 *.xls
 data/*.csv
 !data/*_template.csv
-output_*.csvbackups/
+!data/salla_orders_sample.csv
+!data/salla_city*.csv
+!data/salla_top*.csv
+!data/salla_combo*.csv
+!data/salla_demand*.csv
+!data/salla_payment*.csv
+!data/salla_seasonal*.csv
+!data/salla_status*.csv
+output_*.csv
+backups/
 *.tar.gz

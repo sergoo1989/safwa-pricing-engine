@@ -3968,10 +3968,15 @@ elif st.session_state.page == "salla_analysis":
     # قراءة ملف الطلبات المفكك باستخدام التخزين المؤقت
     exploded_file = "data/salla_orders_exploded.csv"
     orders_file = "data/salla_orders.csv"
+    sample_file = "data/salla_orders_sample.csv"
     
-    # أولوية للملف المفكك
+    # أولوية للملف المفكك، ثم الملف الكامل، ثم الـ sample
     if os.path.exists(exploded_file):
         orders_file = exploded_file
+    elif os.path.exists(orders_file):
+        orders_file = orders_file
+    elif os.path.exists(sample_file):
+        orders_file = sample_file
     elif not os.path.exists(orders_file):
         st.warning("⚠️ ملف الطلبات غير موجود!")
         st.stop()
@@ -4122,7 +4127,14 @@ elif st.session_state.page == "salla_analysis":
         with st.spinner("جاري توليد التحليلات..."):
             try:
                 from pricing_app.salla_insights import SallaInsights
-                analyzer = SallaInsights("data/salla_orders_exploded.csv" if os.path.exists("data/salla_orders_exploded.csv") else "data/salla_orders.csv")
+                # تحديد الملف المتاح
+                if os.path.exists("data/salla_orders_exploded.csv"):
+                    data_file = "data/salla_orders_exploded.csv"
+                elif os.path.exists("data/salla_orders.csv"):
+                    data_file = "data/salla_orders.csv"
+                else:
+                    data_file = "data/salla_orders_sample.csv"
+                analyzer = SallaInsights(data_file)
                 analyzer.load_pricing_data()
                 analyzer.save_insights()
                 st.success("✅ تم حفظ جميع التحليلات في مجلد data/")
