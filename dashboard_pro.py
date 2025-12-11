@@ -3964,9 +3964,23 @@ elif st.session_state.page == "salla_analysis":
         if month_series is None:
             month_series = pd.Series(dtype='float64', index=orders_df.index)
 
-        orders_df['year'] = year_series.fillna(orders_df['order_date'].dt.year)
-        orders_df['month'] = month_series.fillna(orders_df['order_date'].dt.month)
-        orders_df['year_month'] = orders_df['order_date'].dt.to_period('M').astype(str)
+        # استخراج السنة والشهر فقط من التواريخ الصالحة (not NaN)
+        valid_dates_mask = orders_df['order_date'].notna()
+        if valid_dates_mask.any():
+            orders_df.loc[valid_dates_mask, 'year'] = year_series[valid_dates_mask].fillna(
+                orders_df.loc[valid_dates_mask, 'order_date'].dt.year
+            )
+            orders_df.loc[valid_dates_mask, 'month'] = month_series[valid_dates_mask].fillna(
+                orders_df.loc[valid_dates_mask, 'order_date'].dt.month
+            )
+            orders_df.loc[valid_dates_mask, 'year_month'] = (
+                orders_df.loc[valid_dates_mask, 'order_date'].dt.to_period('M').astype(str)
+            )
+        else:
+            # لا توجد تواريخ صالحة، نستخدم القيم الموجودة فقط
+            orders_df['year'] = year_series
+            orders_df['month'] = month_series
+            orders_df['year_month'] = None
         
     except Exception as e:
         st.error(f"❌ خطأ في قراءة الملف: {e}")
