@@ -32,9 +32,22 @@ class SallaInsights:
         
         if Path(orders_file).exists():
             self.orders_df = pd.read_csv(orders_file)
-            self.orders_df['order_date'] = pd.to_datetime(self.orders_df['order_date'], errors='coerce')
-            self.orders_df['year'] = self.orders_df['order_date'].dt.year
-            self.orders_df['month'] = self.orders_df['order_date'].dt.month
+            
+            # التحقق من وجود عمود order_date
+            if 'order_date' in self.orders_df.columns:
+                self.orders_df['order_date'] = pd.to_datetime(self.orders_df['order_date'], errors='coerce')
+                self.orders_df['year'] = self.orders_df['order_date'].dt.year
+                self.orders_df['month'] = self.orders_df['order_date'].dt.month
+            elif 'تاريخ الطلب' in self.orders_df.columns:
+                # إذا كان العمود بالعربي
+                self.orders_df['order_date'] = pd.to_datetime(self.orders_df['تاريخ الطلب'], errors='coerce')
+                self.orders_df['year'] = self.orders_df['order_date'].dt.year
+                self.orders_df['month'] = self.orders_df['order_date'].dt.month
+            else:
+                # لا يوجد عمود تاريخ، نضيف أعمدة فارغة
+                self.orders_df['order_date'] = pd.NaT
+                self.orders_df['year'] = None
+                self.orders_df['month'] = None
     
     def load_pricing_data(self, products_file="data/products_template.csv", 
                          packages_file="data/packages_template.csv",
