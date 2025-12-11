@@ -3846,20 +3846,42 @@ elif st.session_state.page == "salla_analysis":
     orders_file = "data/salla_orders.csv"
     sample_file = "data/salla_orders_sample.csv"
     
-    # أولوية للملف المفكك، ثم الملف الكامل، ثم الـ sample
-    if os.path.exists(exploded_file):
-        orders_file = exploded_file
-    elif os.path.exists(orders_file):
-        orders_file = orders_file
+    # التحقق من وجود ملف مفكك محدّث
+    exploded_file_exists = os.path.exists(exploded_file)
+    original_file_exists = os.path.exists(orders_file)
+    
+    # إذا كان الملف المفكك موجود والملف الأصلي موجود، نقارن تاريخ التعديل
+    use_exploded = False
+    skip_explode = False
+    
+    if exploded_file_exists and original_file_exists:
+        exploded_mtime = os.path.getmtime(exploded_file)
+        original_mtime = os.path.getmtime(orders_file)
+        # إذا الملف المفكك أحدث من الأصلي → نستخدمه مباشرة
+        if exploded_mtime >= original_mtime:
+            use_exploded = True
+            skip_explode = True
+            st.info(f"⚡ استخدام الملف المفكك المحفوظ (أسرع)")
+    elif exploded_file_exists and not original_file_exists:
+        # الملف الأصلي غير موجود، نستخدم المفكك فقط
+        use_exploded = True
+        skip_explode = True
+        st.info(f"✅ استخدام الملف المفكك المحفوظ")
+    
+    # اختيار الملف المناسب
+    if use_exploded:
+        file_to_load = exploded_file
+    elif original_file_exists:
+        file_to_load = orders_file
     elif os.path.exists(sample_file):
-        orders_file = sample_file
-    elif not os.path.exists(orders_file):
+        file_to_load = sample_file
+    else:
         st.warning("⚠️ ملف الطلبات غير موجود!")
         st.stop()
 
     # استخدام التخزين المؤقت لتسريع التحميل
     with st.spinner("جاري تحميل البيانات..."):
-        orders_df = load_salla_orders_cached(orders_file)
+        orders_df = load_salla_orders_cached(file_to_load)
     
     if orders_df is None:
         st.error("❌ فشل تحميل البيانات")
@@ -3907,8 +3929,8 @@ elif st.session_state.page == "salla_analysis":
                 orders_df.loc[mask, 'year'] = pd.to_numeric(extracted_year, errors='coerce')
                 orders_df.loc[mask, 'month'] = pd.to_numeric(extracted_month, errors='coerce')
         
-        # تفكيك SKU إذا لزم الأمر
-        if 'sku_raw' in orders_df.columns and 'sku_code' not in orders_df.columns:
+        # تفكيك SKU إذا لزم الأمر (وإذا لم يكن الملف مفككاً مسبقاً)
+        if not skip_explode and 'sku_raw' in orders_df.columns and 'sku_code' not in orders_df.columns:
             with st.spinner("🔄 جاري تفكيك المنتجات والبكجات..."):
                 from pricing_app.salla_normalizer import parse_sku_cell
                 
