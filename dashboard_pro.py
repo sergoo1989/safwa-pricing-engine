@@ -3880,6 +3880,9 @@ elif st.session_state.page == "salla_analysis":
         if 'رقم الطلب' in orders_df.columns:
             orders_df = orders_df.rename(columns=column_mapping)
         
+        # حفظ نسخة من التاريخ الأصلي قبل التحويل (للاستخدام في حالة الفشل)
+        orders_df['order_date_original'] = orders_df['order_date'].astype(str)
+        
         # تحويل التاريخ مع تعزيزات للفورمات المختلفة حتى لا نفقد سنوات حديثة (2024/2025)
         orders_df['order_date'] = pd.to_datetime(
             orders_df['order_date'], errors='coerce', dayfirst=True, infer_datetime_format=True
@@ -3887,18 +3890,22 @@ elif st.session_state.page == "salla_analysis":
         if orders_df['order_date'].isna().any():
             # محاولة ثانية بصيغة ISO/UTC مثل 2024-12-01T10:00:00Z
             orders_df.loc[orders_df['order_date'].isna(), 'order_date'] = pd.to_datetime(
-                orders_df.loc[orders_df['order_date'].isna(), 'order_date'],
+                orders_df.loc[orders_df['order_date'].isna(), 'order_date_original'],
                 errors='coerce',
                 format='ISO8601',
                 utc=True,
             )
         if orders_df['order_date'].isna().any():
-            # أخيراً: استخرج السنة/الشهر رقمياً إذا بقيت قيم غير قابلة للتحويل
-            raw_dates = orders_df.loc[orders_df['order_date'].isna(), 'order_date']
-            extracted_year = raw_dates.str.extract(r'(20\d{2})')[0]
-            extracted_month = raw_dates.str.extract(r'-(\d{1,2})-')[0]
-            orders_df.loc[orders_df['order_date'].isna(), 'year'] = pd.to_numeric(extracted_year, errors='coerce')
-            orders_df.loc[orders_df['order_date'].isna(), 'month'] = pd.to_numeric(extracted_month, errors='coerce')
+            # أخيراً: استخرج السنة/الشهر من التاريخ الأصلي (قبل التحويل)
+            mask = orders_df['order_date'].isna()
+            raw_dates = orders_df.loc[mask, 'order_date_original']
+            
+            # تحويل إلى string والتأكد من وجود قيم صالحة
+            if len(raw_dates) > 0 and not raw_dates.isna().all():
+                extracted_year = raw_dates.str.extract(r'(20\d{2})', expand=False)
+                extracted_month = raw_dates.str.extract(r'-(\d{1,2})-', expand=False)
+                orders_df.loc[mask, 'year'] = pd.to_numeric(extracted_year, errors='coerce')
+                orders_df.loc[mask, 'month'] = pd.to_numeric(extracted_month, errors='coerce')
         
         # تفكيك SKU إذا لزم الأمر
         if 'sku_raw' in orders_df.columns and 'sku_code' not in orders_df.columns:
