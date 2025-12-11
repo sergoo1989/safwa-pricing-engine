@@ -1843,47 +1843,38 @@ elif st.session_state.page == "pricing":
             
             # حساب السعر المباشر من المعادلة لتحقيق الهامش المستهدف
             def solve_price_for_margin(target_margin_val: float):
-                """حساب السعر المباشر الذي يحقق الهامش المستهدف مع مراعاة الشحن المجاني"""
+                """حساب السعر المباشر الذي يحقق الهامش المستهدف مع مراعاة الشحن المجاني
                 
-                # نحاول الحساب مرتين: مرة مع شحن ومرة بدون
-                # ونختار الحل الصحيح بناءً على العتبة
+                المنطق الذكي:
+                1. نجرب أولاً السعر بدون شحن/تحضير
+                2. إذا كان السعر < حد 98 ويحقق الهامش → نستخدمه (الأفضل للعميل!)
+                3. وإلا نضيف الشحن والتحضير ونحسب السعر
+                """
                 
-                for assume_free_shipping in [False, True]:
-                    if assume_free_shipping:
-                        actual_shipping = 0
-                        actual_preparation = 0
+                # أولاً: نجرب بدون شحن/تحضير
+                fixed_costs_free = cogs + ops_buffer
+                denominator = 1 - total_pct - target_margin_val
+                
+                if denominator > 0:
+                    net_price_free = fixed_costs_free / denominator
+                    price_with_vat_after_discount_free = net_price_free * (1 + vat_rate)
+                    price_before_discount_free = price_with_vat_after_discount_free / (1 - discount_rate)
+                    
+                    # إذا السعر بدون شحن < الحد (98) → نستخدمه!
+                    if free_threshold > 0 and price_before_discount_free < free_threshold:
+                        price_before_discount = price_before_discount_free
                     else:
-                        actual_shipping = shipping
-                        actual_preparation = preparation
-                    
-                    fixed_costs = cogs + actual_shipping + actual_preparation + ops_buffer
-                    denominator = 1 - total_pct - target_margin_val
-                    
-                    if denominator <= 0:
-                        continue
-                    
-                    # المعادلة: السعر الصافي = (COGS + رسوم ثابتة) / (1 - النسب - الهامش)
-                    net_price = fixed_costs / denominator
-                    
-                    # السعر شامل الضريبة بعد الخصم
-                    price_with_vat_after_discount = net_price * (1 + vat_rate)
-                    
-                    # السعر شامل الضريبة قبل الخصم
-                    price_before_discount = price_with_vat_after_discount / (1 - discount_rate)
-                    
-                    # التحقق: هل افتراضنا بشأن الشحن المجاني صحيح؟
-                    if free_threshold > 0:
-                        # الشرط: سعر البيع شامل الضريبة قبل الخصم < الحد ⇒ شحن وتجهيز = 0
-                        if assume_free_shipping and price_before_discount < free_threshold:
-                            # صحيح: السعر أقل من الحد والشحن مجاني
-                            break
-                        elif not assume_free_shipping and price_before_discount >= free_threshold:
-                            # صحيح: السعر أكبر أو يساوي الحد والشحن مدفوع
-                            break
-                    else:
-                        # لا توجد عتبة - الشحن دائماً مدفوع
-                        if not assume_free_shipping:
-                            break
+                        # ثانياً: السعر >= الحد، نحسب مع الشحن/التحضير
+                        fixed_costs_with_ship = cogs + shipping + preparation + ops_buffer
+                        if denominator > 0:
+                            net_price_with_ship = fixed_costs_with_ship / denominator
+                            price_with_vat_after_discount_with_ship = net_price_with_ship * (1 + vat_rate)
+                            price_before_discount = price_with_vat_after_discount_with_ship / (1 - discount_rate)
+                        else:
+                            price_before_discount = price_before_discount_free
+                else:
+                    # الحساب غير ممكن (denominator <= 0)
+                    price_before_discount = 0
                 
                 # احسب التفصيل الكامل
                 bd = calculate_price_breakdown(
