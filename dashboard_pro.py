@@ -4228,6 +4228,25 @@ elif st.session_state.page == "salla_analysis":
     # ========== التحليلات الذكية ==========
     st.header("🧠 التحليلات الذكية")
     
+    # زر مسح البيانات المحفوظة
+    col_clear1, col_clear2 = st.columns([3, 1])
+    with col_clear2:
+        if st.button("🗑️ مسح كل البيانات المحفوظة", type="secondary"):
+            import glob
+            cache_files = glob.glob("data/cache_*.csv")
+            deleted_count = 0
+            for f in cache_files:
+                try:
+                    os.remove(f)
+                    deleted_count += 1
+                except:
+                    pass
+            if deleted_count > 0:
+                st.success(f"✅ تم مسح {deleted_count} ملف")
+                st.rerun()
+            else:
+                st.info("لا توجد ملفات محفوظة")
+    
     # تحميل كسول - فقط عند الحاجة
     if st.checkbox("⚡ تحميل التحليلات المتقدمة", value=False, help="قد يستغرق بعض الوقت"):
         try:
@@ -4253,7 +4272,35 @@ elif st.session_state.page == "salla_analysis":
             with tab0:
                 st.subheader("🔍 مطابقة SKU بين سلة وملفات التسعير")
                 
-                missing, found, summary = analyzer.get_missing_skus()
+                # محاولة تحميل من الذاكرة المؤقتة
+                cache_file_vlookup = "data/cache_vlookup.csv"
+                cache_file_missing = "data/cache_missing_skus.csv"
+                cache_file_found = "data/cache_found_skus.csv"
+                
+                use_cache = all([
+                    os.path.exists(cache_file_vlookup),
+                    os.path.exists(cache_file_missing),
+                    os.path.exists(cache_file_found)
+                ])
+                
+                if use_cache:
+                    st.info("⚡ تحميل من الملفات المحفوظة (أسرع)")
+                    try:
+                        summary_df = pd.read_csv(cache_file_vlookup)
+                        summary = summary_df.iloc[0].to_dict()
+                        missing = pd.read_csv(cache_file_missing)
+                        found = pd.read_csv(cache_file_found)
+                    except:
+                        use_cache = False
+                
+                if not use_cache:
+                    with st.spinner("⏳ جاري التحليل..."):
+                        missing, found, summary = analyzer.get_missing_skus()
+                        # حفظ النتائج
+                        pd.DataFrame([summary]).to_csv(cache_file_vlookup, index=False)
+                        missing.to_csv(cache_file_missing, index=False)
+                        found.to_csv(cache_file_found, index=False)
+                        st.success("✅ تم الحفظ في الذاكرة المؤقتة")
                 
                 if summary:
                     # ملخص سريع
@@ -4358,7 +4405,18 @@ elif st.session_state.page == "salla_analysis":
             with tab1:
                 st.subheader("💰 تحليل التكاليف")
                 
-                sales_with_cost = analyzer.calculate_cogs_for_sales()
+                # محاولة تحميل من الذاكرة المؤقتة
+                cache_file_cogs = "data/cache_cogs_analysis.csv"
+                
+                if os.path.exists(cache_file_cogs):
+                    st.info("⚡ تحميل من الملف المحفوظ (أسرع)")
+                    sales_with_cost = pd.read_csv(cache_file_cogs)
+                else:
+                    with st.spinner("⏳ جاري حساب التكاليف..."):
+                        sales_with_cost = analyzer.calculate_cogs_for_sales()
+                        if sales_with_cost is not None:
+                            sales_with_cost.to_csv(cache_file_cogs, index=False)
+                            st.success("✅ تم الحفظ في الذاكرة المؤقتة")
                 if sales_with_cost is not None:
                     # تطبيق الفلاتر
                     if selected_year != "الكل":
@@ -4400,7 +4458,18 @@ elif st.session_state.page == "salla_analysis":
             with tab2:
                 st.subheader("📅 أفضل المنتجات لكل شهر (يحترم الفلاتر)")
 
-                seasonal_all = analyzer.get_seasonal_recommendations(df=filtered_df, top_n_per_month=3)
+                # محاولة تحميل من الذاكرة المؤقتة
+                cache_file_seasonal = "data/cache_seasonal_recommendations.csv"
+                
+                if os.path.exists(cache_file_seasonal):
+                    st.info("⚡ تحميل من الملف المحفوظ (أسرع)")
+                    seasonal_all = pd.read_csv(cache_file_seasonal)
+                else:
+                    with st.spinner("⏳ جاري التحليل الموسمي..."):
+                        seasonal_all = analyzer.get_seasonal_recommendations(df=filtered_df, top_n_per_month=3)
+                        if seasonal_all is not None and not seasonal_all.empty:
+                            seasonal_all.to_csv(cache_file_seasonal, index=False)
+                            st.success("✅ تم الحفظ في الذاكرة المؤقتة")
 
                 # عرض أحدث شهر أولاً لتفادي إظهار يناير افتراضياً
                 if seasonal_all is not None and not seasonal_all.empty:
@@ -4467,7 +4536,18 @@ elif st.session_state.page == "salla_analysis":
             with tab3:
                 st.subheader("🤝 المنتجات التي تُباع معًا")
                 
-                associations = analyzer.find_product_associations(min_support=2)
+                # محاولة تحميل من الذاكرة المؤقتة
+                cache_file_assoc = "data/cache_product_associations.csv"
+                
+                if os.path.exists(cache_file_assoc):
+                    st.info("⚡ تحميل من الملف المحفوظ (أسرع)")
+                    associations = pd.read_csv(cache_file_assoc)
+                else:
+                    with st.spinner("⏳ جاري تحليل الارتباطات..."):
+                        associations = analyzer.find_product_associations(min_support=2)
+                        if associations is not None and len(associations) > 0:
+                            associations.to_csv(cache_file_assoc, index=False)
+                            st.success("✅ تم الحفظ في الذاكرة المؤقتة")
                 if associations is not None and len(associations) > 0:
                     st.dataframe(associations.head(20), hide_index=True, use_container_width=True)
                     
@@ -4479,7 +4559,18 @@ elif st.session_state.page == "salla_analysis":
             with tab4:
                 st.subheader("📦 بكجات مقترحة بناءً على أنماط الشراء")
                 
-                bundles = analyzer.suggest_bundles(min_frequency=2, min_qty=3)
+                # محاولة تحميل من الذاكرة المؤقتة
+                cache_file_bundles = "data/cache_suggested_bundles.csv"
+                
+                if os.path.exists(cache_file_bundles):
+                    st.info("⚡ تحميل من الملف المحفوظ (أسرع)")
+                    bundles = pd.read_csv(cache_file_bundles)
+                else:
+                    with st.spinner("⏳ جاري اقتراح البكجات..."):
+                        bundles = analyzer.suggest_bundles(min_frequency=2, min_qty=3)
+                        if bundles is not None and len(bundles) > 0:
+                            bundles.to_csv(cache_file_bundles, index=False)
+                            st.success("✅ تم الحفظ في الذاكرة المؤقتة")
                 if bundles is not None and len(bundles) > 0:
                     st.dataframe(bundles, hide_index=True, use_container_width=True)
                     
@@ -4496,7 +4587,18 @@ elif st.session_state.page == "salla_analysis":
             with tab5:
                 st.subheader("🏙️ توصيات خاصة بالمدن")
                 
-                city_recs = analyzer.get_city_recommendations(top_n=5)
+                # محاولة تحميل من الذاكرة المؤقتة
+                cache_file_cities = "data/cache_city_recommendations.csv"
+                
+                if os.path.exists(cache_file_cities):
+                    st.info("⚡ تحميل من الملف المحفوظ (أسرع)")
+                    city_recs = pd.read_csv(cache_file_cities)
+                else:
+                    with st.spinner("⏳ جاري تحليل المدن..."):
+                        city_recs = analyzer.get_city_recommendations(top_n=5)
+                        if city_recs is not None:
+                            city_recs.to_csv(cache_file_cities, index=False)
+                            st.success("✅ تم الحفظ في الذاكرة المؤقتة")
                 if city_recs is not None:
                     # عرض حسب المدينة
                     cities_list = city_recs['city'].unique()
