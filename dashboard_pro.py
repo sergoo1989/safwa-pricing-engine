@@ -3888,6 +3888,10 @@ elif st.session_state.page == "salla_analysis":
         st.stop()
 
     try:
+        # التأكد من أن order_date هو datetime (خاصة بعد تحميل ملف مفكك محفوظ)
+        if 'order_date' in orders_df.columns:
+            orders_df['order_date'] = pd.to_datetime(orders_df['order_date'], errors='coerce')
+        
         # توحيد أسماء الأعمدة للإنجليزية
         column_mapping = {
             'رقم الطلب': 'order_id',
@@ -3986,23 +3990,46 @@ elif st.session_state.page == "salla_analysis":
         if month_series is None:
             month_series = pd.Series(dtype='float64', index=orders_df.index)
 
-        # استخراج السنة والشهر فقط من التواريخ الصالحة (not NaN)
-        valid_dates_mask = orders_df['order_date'].notna()
-        if valid_dates_mask.any():
-            orders_df.loc[valid_dates_mask, 'year'] = year_series[valid_dates_mask].fillna(
-                orders_df.loc[valid_dates_mask, 'order_date'].dt.year
-            )
-            orders_df.loc[valid_dates_mask, 'month'] = month_series[valid_dates_mask].fillna(
-                orders_df.loc[valid_dates_mask, 'order_date'].dt.month
-            )
-            orders_df.loc[valid_dates_mask, 'year_month'] = (
-                orders_df.loc[valid_dates_mask, 'order_date'].dt.to_period('M').astype(str)
-            )
+        # التأكد أن العمود datetime قبل استخدام .dt accessor
+        # استخراج السنة والشهر فقط من التواريخ الصالحة
+        if pd.api.types.is_datetime64_any_dtype(orders_df['order_date']):
+            valid_dates_mask = orders_df['order_date'].notna()
+            if valid_dates_mask.any():
+                orders_df.loc[valid_dates_mask, 'year'] = year_series[valid_dates_mask].fillna(
+                    orders_df.loc[valid_dates_mask, 'order_date'].dt.year
+                )
+                orders_df.loc[valid_dates_mask, 'month'] = month_series[valid_dates_mask].fillna(
+                    orders_df.loc[valid_dates_mask, 'order_date'].dt.month
+                )
+                orders_df.loc[valid_dates_mask, 'year_month'] = (
+                    orders_df.loc[valid_dates_mask, 'order_date'].dt.to_period('M').astype(str)
+                )
+            else:
+                # لا توجد تواريخ صالحة، نستخدم القيم الموجودة فقط
+                orders_df['year'] = year_series
+                orders_df['month'] = month_series
+                orders_df['year_month'] = None
         else:
-            # لا توجد تواريخ صالحة، نستخدم القيم الموجودة فقط
-            orders_df['year'] = year_series
-            orders_df['month'] = month_series
-            orders_df['year_month'] = None
+            # العمود ليس datetime، نحاول التحويل مرة أخرى
+            orders_df['order_date'] = pd.to_datetime(orders_df['order_date'], errors='coerce')
+            if pd.api.types.is_datetime64_any_dtype(orders_df['order_date']):
+                # نجح التحويل، نحاول مرة أخرى
+                valid_dates_mask = orders_df['order_date'].notna()
+                if valid_dates_mask.any():
+                    orders_df.loc[valid_dates_mask, 'year'] = year_series[valid_dates_mask].fillna(
+                        orders_df.loc[valid_dates_mask, 'order_date'].dt.year
+                    )
+                    orders_df.loc[valid_dates_mask, 'month'] = month_series[valid_dates_mask].fillna(
+                        orders_df.loc[valid_dates_mask, 'order_date'].dt.month
+                    )
+                    orders_df.loc[valid_dates_mask, 'year_month'] = (
+                        orders_df.loc[valid_dates_mask, 'order_date'].dt.to_period('M').astype(str)
+                    )
+            else:
+                # فشل التحويل تماماً
+                orders_df['year'] = year_series
+                orders_df['month'] = month_series
+                orders_df['year_month'] = None
         
     except Exception as e:
         st.error(f"❌ خطأ في قراءة الملف: {e}")
